@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+      <th scope="col">Runtime</th>
+      <th scope="col">Average vote</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let movie of movies">
+      <td>{{ movie.id }}</td>
+      <td>{{ movie.title }}</td>
+      <td>{{ movie.runtime }}</td>
+      <td>{{ movie.vote_average }}</td>
+    </tr>
+  </tbody>
+</table>
