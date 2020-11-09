@@ -1,3 +1,4 @@
+import { MovieChoiceService } from './../_services/movie-choice.service';
 import { Movie } from './../_models/movie';
 import { MovieDaoService } from './../_services/movie-dao.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,20 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepageComponent implements OnInit {
 
-  movies: Movie[] = [];
+  currentMovie: Movie;
+  isImageLoading: boolean;
 
   constructor(
-    private movieDaoService: MovieDaoService
+    private movieDaoService: MovieDaoService,
+    private movieChoiceService: MovieChoiceService
   ) { }
 
   ngOnInit(): void {
-    this.updateMovieList();
+    this.movieChoiceService.updateMovieList();
+    this.currentMovie = this.movieChoiceService.getCurrentMovie();
   }
 
-  private updateMovieList(): void {
-    this.movieDaoService.getAllMovies().subscribe((movies: Movie[]) => {
-      this.movies = movies;
-    });
+  public nextMovie(): void {
+    this.currentMovie = this.movieChoiceService.nextMovie();
   }
 
 }

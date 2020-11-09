@@ -1,3 +1,4 @@
+import { MovieDaoService } from './_services/movie-dao.service';
 import { RestInterceptorService } from './_services/rest-interceptor.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -19,7 +20,9 @@ import { RoomsWidgetComponent } from './_components/rooms-widget/rooms-widget.co
     BrowserModule,
     FormsModule
   ],
-  providers: [{
+  providers: [
+    MovieDaoService,
+    {
     provide: HTTP_INTERCEPTORS,
     useClass: RestInterceptorService,
     multi: true

@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.webSocketAPI.closeWebSocket();
   }
 
-  sendMessage(sendForm: NgForm){
+  sendMessage(sendForm: NgForm): void {
     const chatMessageDto = new ChatMessageDto(sendForm.value.user, sendForm.value.message);
     this.webSocketAPI.sendMessage(chatMessageDto);
     sendForm.controls.message.reset();

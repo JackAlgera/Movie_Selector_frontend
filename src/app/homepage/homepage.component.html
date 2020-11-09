@@ -1,18 +1,12 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Title</th>
-      <th scope="col">Runtime</th>
-      <th scope="col">Average vote</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let movie of movies">
-      <td>{{ movie.id }}</td>
-      <td>{{ movie.title }}</td>
-      <td>{{ movie.runtime }}</td>
-      <td>{{ movie.vote_average }}</td>
-    </tr>
-  </tbody>
-</table>
+<div *ngIf="currentMovie">
+  <p>Id : {{ currentMovie.id }}</p>
+  <p>Title : {{ currentMovie.title }}</p>
+  <img [src]="currentMovie.currentMoviePoster" alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
+  <ng-template #noImageFound>
+      <img src="fallbackImage.png" alt="Fallbackimage">
+  </ng-template>
+
+</div>
+<div>
+  <button type="button" (click)="nextMovie()" class="btn btn-primary">Next Image</button>
+</div>

@@ -4,12 +4,9 @@ import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
 
 export class WebSocketAPI {
-    webSocketEndPoint = 'ws://localhost:8080/api/chat';
-    topic = '/topic/greetings';
-    stompClient: any;
+    webSocketEndPoint = 'ws://localhost:8080/api/selection';
 
     webSocket: WebSocket;
-    chatMessages: ChatMessageDto[] = [];
 
     constructor(){
     }
@@ -24,7 +21,6 @@ export class WebSocketAPI {
       this.webSocket.onmessage = (event) => {
         const chatMessageDto = JSON.parse(event.data);
 
-        this.chatMessages.push(chatMessageDto);
       };
 
       this.webSocket.onclose = (event) => {

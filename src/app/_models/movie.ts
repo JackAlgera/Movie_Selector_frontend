@@ -21,6 +21,8 @@ export class Movie {
   vote_average: number;
   vote_count: number;
 
+  currentMoviePoster: any;
+
   constructor() {
   }
 }
