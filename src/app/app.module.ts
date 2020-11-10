@@ -1,3 +1,4 @@
+import { RoomsWidgetComponent } from './room-handler/rooms-widget/rooms-widget.component';
 import { MovieDaoService } from './_services/movie-dao.service';
 import { RestInterceptorService } from './_services/rest-interceptor.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,7 +8,6 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HomepageComponent } from './homepage/homepage.component';
 import { FormsModule } from '@angular/forms';
-import { RoomsWidgetComponent } from './_components/rooms-widget/rooms-widget.component';
 
 @NgModule({
   declarations: [
@@ -23,10 +23,11 @@ import { RoomsWidgetComponent } from './_components/rooms-widget/rooms-widget.co
   providers: [
     MovieDaoService,
     {
-    provide: HTTP_INTERCEPTORS,
-    useClass: RestInterceptorService,
-    multi: true
-  }],
+      provide: HTTP_INTERCEPTORS,
+      useClass: RestInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

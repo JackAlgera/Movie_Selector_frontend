@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row justify-content-center m-3">
+    <div class="col-4">
+      <button type="button" (click)="updateRooms()" class="btn btn-primary">Refresh rooms</button>
+    </div>
+    <div class="col-4">
+      <button type="button" (click)="addNewRoom()" class="btn btn-primary">Create new room</button>
+    </div>
+  </div>
+
+  <div class="row m-3">
+    <form (ngSubmit)="joinRoom(userForm)" #userForm="ngForm">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-4">
+            <input type="text" class="form-control" name="userName" id="input-userName" ngModel placeholder="User name">
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" name="roomId" id="input-rooomId" ngModel placeholder="Room ID">
+          </div>
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary">Add user</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row m-2">
+    <table class="table border">
+      <thead>
+        <tr>
+          <th scope="col">Room Id</th>
+          <th scope="col">Number of users</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let room of availableRooms">
+          <th>{{ room.roomId }}</th>
+          <td>{{ room.connectedUsers.length }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row m-1">
+    <p>Current user name : {{ roomHandlerService.currentUser ? roomHandlerService.currentUser.userName : '' }}</p>
+  </div>
+  <div class="row m-1">
+    <p>Current user ID : {{ roomHandlerService.currentUser ? roomHandlerService.currentUser.userId : '' }}</p>
+  </div>
+  <div class="row m-1">
+    <p>Current room Id : {{ roomHandlerService.currentRoom ? roomHandlerService.currentRoom.roomId : 'No room yet' }}</p>
+  </div>
+</div>

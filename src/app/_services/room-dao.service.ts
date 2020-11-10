@@ -1,4 +1,4 @@
-import { Movie } from './../_models/movie';
+import { Movie } from '../_models/movie';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,7 +8,7 @@ import { User } from '../_models/user';
 @Injectable({
   providedIn: 'root'
 })
-export class RoomHandlerService {
+export class RoomDaoService {
 
   constructor(
     private httpClient: HttpClient

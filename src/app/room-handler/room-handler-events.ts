@@ -1,0 +1,5 @@
+export enum ERoomEvents {
+  JOINED_ROOM = 'JOINED_ROOM',
+  CHANGED_IMAGE = 'CHANGED_IMAGE',
+  LOADED_IMAGE = 'LOADED_IMAGE'
+}

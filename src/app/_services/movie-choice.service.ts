@@ -1,3 +1,4 @@
+import { ERoomEvents } from './../room-handler/room-handler-events';
 import { MovieDaoService } from './movie-dao.service';
 import { Movie } from './../_models/movie';
 import { EventEmitter, Injectable } from '@angular/core';
@@ -30,9 +31,11 @@ export class MovieChoiceService {
   }
 
   public nextMovie(): Movie {
+    this.messageEmitter.emit(ERoomEvents.CHANGED_IMAGE);
     this.currentMoviePos = this.currentMoviePos + 1;
+
     if (this.movies.length > 0 && this.currentMoviePos < this.movies.length) {
-      this.currentMovie = this.movies[this.currentMoviePos]
+      this.currentMovie = this.movies[this.currentMoviePos];
 
       if (this.currentMovie.currentMoviePoster == null || this.currentMovie.currentMoviePoster === undefined) {
         let path = null;
@@ -45,7 +48,7 @@ export class MovieChoiceService {
         if (path != null) {
           this.movieDaoService.getMoviePoster(this.currentMovie.poster_path).subscribe(data => {
             this.createImageFromBlob(data, this.currentMovie);
-            this.messageEmitter.emit('LOADED_IMAGE');
+            this.messageEmitter.emit(ERoomEvents.LOADED_IMAGE);
           });
         }
       }
