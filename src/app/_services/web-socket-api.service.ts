@@ -1,7 +1,4 @@
-import { ChatMessageDto } from '../_models/chatMessageDto';
-import { AppComponent } from '../app.component';
-import * as SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
+import { SelectionMessageDto } from './../_dtos/selection-message-dto';
 
 export class WebSocketAPI {
     webSocketEndPoint = 'ws://localhost:8080/api/selection';
@@ -19,7 +16,8 @@ export class WebSocketAPI {
       };
 
       this.webSocket.onmessage = (event) => {
-        const chatMessageDto = JSON.parse(event.data);
+        const selectionMessageDto = JSON.parse(event.data);
+        console.log('Received message : ', selectionMessageDto);
 
       };
 
@@ -28,11 +26,12 @@ export class WebSocketAPI {
       };
     }
 
-    public sendMessage(chatMessageDto: ChatMessageDto){
-      this.webSocket.send(JSON.stringify(chatMessageDto));
+    public sendMessage(selectionMessageDto: SelectionMessageDto): void {
+      console.log('sending message: ', JSON.stringify(selectionMessageDto));
+      this.webSocket.send(JSON.stringify(selectionMessageDto));
     }
 
-    public closeWebSocket() {
+    public closeWebSocket(): void {
       this.webSocket.close();
     }
 

@@ -1,9 +1,11 @@
+import { WebSocketAPI } from './../_services/web-socket-api.service';
 import { ERoomEvents } from './../room-handler/room-handler-events';
 import { MovieChoiceService } from './../_services/movie-choice.service';
 import { Movie } from './../_models/movie';
 import { MovieDaoService } from './../_services/movie-dao.service';
 import { Component, OnInit } from '@angular/core';
 import { RoomHandlerService } from '../room-handler/room-handler.service';
+import { SelectionMessageDto } from '../_dtos/selection-message-dto';
 
 @Component({
   selector: 'app-homepage',
@@ -13,15 +15,18 @@ import { RoomHandlerService } from '../room-handler/room-handler.service';
 export class HomepageComponent implements OnInit {
 
   currentMovie: Movie;
-  isImageLoading: boolean = true;
+  isImageLoading: boolean;
 
   constructor(
     private movieDaoService: MovieDaoService,
     private movieChoiceService: MovieChoiceService,
-    public roomHandlerService: RoomHandlerService
+    public roomHandlerService: RoomHandlerService,
+    private webSocketAPI: WebSocketAPI
   ) { }
 
   ngOnInit(): void {
+    this.isImageLoading = true;
+
     this.movieChoiceService.messageEmitter.subscribe(roomEvent => {
       switch (roomEvent) {
         case ERoomEvents.LOADED_IMAGE:
@@ -41,6 +46,18 @@ export class HomepageComponent implements OnInit {
 
   public nextMovie(): void {
     this.currentMovie = this.movieChoiceService.nextMovie();
+  }
+
+  public likeMovie(): void {
+    this.webSocketAPI.sendMessage(new SelectionMessageDto(
+      this.roomHandlerService.currentUser.userId,
+      this.currentMovie.id,
+      this.roomHandlerService.currentRoom.roomId));
+    this.nextMovie();
+  }
+
+  public dislikeMovie(): void {
+    this.nextMovie();
   }
 
 }

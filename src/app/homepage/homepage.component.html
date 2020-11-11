@@ -4,12 +4,12 @@
     <div class="card-body">
       <h5 class="card-title text-center">{{ currentMovie.title }}</h5>
       <div class="container-fluid">
-        <div class="row">
+        <div class="row justify-content-center">
           <div class="col-4">
-            <a (click)="nextMovie()" class="btn btn-primary">Nope</a>
+            <a (click)="dislikeMovie()" class="btn btn-primary">Nope</a>
           </div>
           <div class="col-4">
-            <a (click)="nextMovie()" class="btn btn-primary">Yes</a>
+            <a (click)="likeMovie()" class="btn btn-primary">Yes</a>
           </div>
         </div>
       </div>

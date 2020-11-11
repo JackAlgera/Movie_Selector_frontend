@@ -1,3 +1,4 @@
+import { WebSocketAPI } from './_services/web-socket-api.service';
 import { RoomsWidgetComponent } from './room-handler/rooms-widget/rooms-widget.component';
 import { MovieDaoService } from './_services/movie-dao.service';
 import { RestInterceptorService } from './_services/rest-interceptor.service';
@@ -22,6 +23,7 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [
     MovieDaoService,
+    WebSocketAPI,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RestInterceptorService,
