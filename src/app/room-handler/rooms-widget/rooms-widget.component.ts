@@ -28,8 +28,27 @@ export class RoomsWidgetComponent implements OnInit {
     });
   }
 
-  public addNewRoom(): void {
-    this.roomDaoService.addNewRoom().subscribe((room: Room) => {
+  public addNewRoom(userName: string): void {
+    if (this.roomHandlerService.currentUser) {
+      return;
+    }
+
+    if (userName) {
+      this.roomDaoService.addNewRoom().subscribe((room: Room) => {
+        this.updateRooms();
+        this.joinRoomWithoutform(userName, room.roomId);
+      });
+    }
+  }
+
+  get objectClass() {
+    return Object;
+  }
+
+  public leaveRoom(): void {
+    this.roomDaoService.removeUserFromRoom(this.roomHandlerService.currentUser.userId,
+      this.roomHandlerService.currentRoom.roomId).subscribe(data => {
+      this.roomHandlerService.leaveRoom();
       this.updateRooms();
     });
   }
@@ -40,6 +59,15 @@ export class RoomsWidgetComponent implements OnInit {
       this.updateRooms();
       user.userId = newUser.userId;
       this.roomHandlerService.joinRoom(user, new Room(userForm.value.roomId));
+    });
+  }
+
+  public joinRoomWithoutform(userName: string, roomId: string) {
+    const user = new User(userName);
+    this.roomDaoService.addUserToRoom(user.userName, roomId).subscribe((newUser: User) => {
+      this.updateRooms();
+      user.userId = newUser.userId;
+      this.roomHandlerService.joinRoom(user, new Room(roomId));
     });
   }
 

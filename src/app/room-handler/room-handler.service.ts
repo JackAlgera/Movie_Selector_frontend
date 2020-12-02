@@ -20,4 +20,9 @@ export class RoomHandlerService {
     this.currentRoom = room;
   }
 
+  public leaveRoom(): void {
+    this.currentRoom = null;
+    this.currentUser = null;
+  }
+
 }

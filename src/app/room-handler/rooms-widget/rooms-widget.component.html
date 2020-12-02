@@ -1,13 +1,9 @@
-<div class="container-fluid">
-  <div class="row justify-content-center m-3">
-    <div class="col-4">
+<div class="container-fluid border my-2">
+  <div class="row justify-content-start m-3">
       <button type="button" (click)="updateRooms()" class="btn btn-primary">Refresh rooms</button>
-    </div>
-    <div class="col-4">
-      <button type="button" (click)="addNewRoom()" class="btn btn-primary">Create new room</button>
-    </div>
+      <button [disabled]="userForm.value.userName == ''" type="button" (click)="addNewRoom(userForm.value.userName)" class="btn btn-primary">Create new room</button>
+      <button [disabled]="!this.roomHandlerService.currentRoom" type="button" (click)="leaveRoom()" class="btn btn-primary">Leave room</button>
   </div>
-
   <div class="row m-3">
     <form (ngSubmit)="joinRoom(userForm)" #userForm="ngForm">
       <div class="container-fluid">
@@ -19,7 +15,7 @@
             <input type="text" class="form-control" name="roomId" id="input-rooomId" ngModel placeholder="Room ID">
           </div>
           <div class="col-4">
-            <button type="submit" class="btn btn-primary">Add user</button>
+            <button [disabled]="this.roomHandlerService.currentUser" type="submit" class="btn btn-primary">Join room</button>
           </div>
         </div>
       </div>
@@ -37,12 +33,14 @@
       <tbody>
         <tr *ngFor="let room of availableRooms">
           <th>{{ room.roomId }}</th>
-          <td>{{ room.connectedUsers.length }}</td>
+          <td>{{ objectClass.keys(room.connectedUsers).length }}</td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
 
+<div class="container-fluid border">
   <div class="row m-1">
     <p>Current user name : {{ roomHandlerService.currentUser ? roomHandlerService.currentUser.userName : '' }}</p>
   </div>
