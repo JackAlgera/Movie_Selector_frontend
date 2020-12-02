@@ -51,7 +51,7 @@ export class HomepageComponent implements OnInit {
   public likeMovie(): void {
     this.webSocketAPI.sendMessage(new SelectionMessageDto(
       this.roomHandlerService.currentUser.userId,
-      this.currentMovie.id,
+      this.currentMovie.imdb_id,
       this.roomHandlerService.currentRoom.roomId));
     this.nextMovie();
   }

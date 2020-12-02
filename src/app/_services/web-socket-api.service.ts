@@ -18,7 +18,6 @@ export class WebSocketAPI {
       this.webSocket.onmessage = (event) => {
         const selectionMessageDto = JSON.parse(event.data);
         console.log('Received message : ', selectionMessageDto);
-
       };
 
       this.webSocket.onclose = (event) => {

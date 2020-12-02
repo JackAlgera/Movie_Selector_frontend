@@ -1,5 +1,5 @@
 import { NgForm } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { Room } from 'src/app/_models/room';
 import { User } from 'src/app/_models/user';
 import { RoomDaoService } from 'src/app/_services/room-dao.service';
