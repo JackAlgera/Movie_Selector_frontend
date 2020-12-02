@@ -4,7 +4,12 @@
       <app-rooms-widget></app-rooms-widget>
     </div>
     <div class="col">
-      <app-homepage></app-homepage>
+      <div *ngIf="movieChoiceService.finalSelectedMovie; else notYetFound">
+        <app-found-movie></app-found-movie>
+      </div>
+      <ng-template #notYetFound>
+        <app-homepage></app-homepage>
+      </ng-template>
     </div>
   </div>
 </div>

@@ -26,4 +26,12 @@ export class RoomDaoService {
     return this.httpClient.post<User>(`rooms/${roomId}/users?userName=${userName}`, { responseType: 'json'});
   }
 
+  public removeUserFromRoom(userId: string, roomId: string); void {
+
+  }
+
+  public getSelectedRoomMovie(roomId: string): Observable<Movie> {
+    return this.httpClient.get<Movie>(`rooms/${roomId}/foundMovie`);
+  }
+
 }

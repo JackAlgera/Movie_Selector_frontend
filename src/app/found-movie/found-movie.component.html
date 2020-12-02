@@ -1,0 +1,10 @@
+<div *ngIf="movieChoiceService.finalSelectedMovie">
+  <div class="card" style="width: 18rem;">
+    <img src="{{ movieChoiceService.finalSelectedMovie.currentMoviePoster ? movieChoiceService.finalSelectedMovie.currentMoviePoster : 'assets/images/Image_not_found.jpeg' }}" class="card-img-top">
+    <div class="card-body">
+      <h5 class="card-title text-center">{{ movieChoiceService.finalSelectedMovie.title }}</h5>
+      <div class="container-fluid">
+      <p class="card-text">{{ movieChoiceService.finalSelectedMovie.overview }}</p>
+    </div>
+  </div>
+</div>

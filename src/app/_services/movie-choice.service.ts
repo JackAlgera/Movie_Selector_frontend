@@ -1,3 +1,5 @@
+import { RoomHandlerService } from './../room-handler/room-handler.service';
+import { RoomDaoService } from 'src/app/_services/room-dao.service';
 import { ERoomEvents } from './../room-handler/room-handler-events';
 import { MovieDaoService } from './movie-dao.service';
 import { Movie } from './../_models/movie';
@@ -14,8 +16,12 @@ export class MovieChoiceService {
   private currentMovie: Movie;
   private currentMoviePos: number;
 
+  public finalSelectedMovie: Movie = null;
+
   constructor(
-    private movieDaoService: MovieDaoService
+    private movieDaoService: MovieDaoService,
+    private roomDaoService: RoomDaoService,
+    private roomHandlerService: RoomHandlerService
   ) {
     this.messageEmitter = new EventEmitter<string>();
     this.movies = [];
@@ -62,6 +68,26 @@ export class MovieChoiceService {
     return null;
   }
 
+  public setFoundMovie(): void {
+    this.roomDaoService.getSelectedRoomMovie(this.roomHandlerService.currentRoom.roomId).subscribe((movie: Movie) => {
+      this.finalSelectedMovie = movie;
+      let path = null;
+      if (this.finalSelectedMovie.poster_path != null) {
+        path = this.finalSelectedMovie.poster_path;
+      } else if (this.finalSelectedMovie.backdrop_path != null) {
+        path = this.finalSelectedMovie.backdrop_path;
+      }
+
+      if (path != null) {
+        this.movieDaoService.getMoviePoster(this.finalSelectedMovie.poster_path).subscribe(data => {
+          this.createImageFromBlob(data, this.finalSelectedMovie);
+        });
+      }
+    });
+
+    this.messageEmitter.emit(ERoomEvents.SELECTED_MOVIE);
+  }
+
   public getCurrentMovie(): Movie {
     return this.currentMovie;
   }
@@ -75,6 +101,6 @@ export class MovieChoiceService {
     if (image) {
        reader.readAsDataURL(image);
     }
- }
+  }
 
 }
