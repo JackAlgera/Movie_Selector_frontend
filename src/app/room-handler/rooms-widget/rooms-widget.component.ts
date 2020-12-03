@@ -1,9 +1,10 @@
-import { NgForm } from '@angular/forms';
 import { Component, OnInit, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Room } from 'src/app/_models/room';
 import { User } from 'src/app/_models/user';
 import { RoomDaoService } from 'src/app/_services/room-dao.service';
 import { RoomHandlerService } from '../room-handler.service';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-rooms-widget',
@@ -16,7 +17,9 @@ export class RoomsWidgetComponent implements OnInit {
 
   constructor(
     private roomDaoService: RoomDaoService,
-    public roomHandlerService: RoomHandlerService
+    public roomHandlerService: RoomHandlerService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +38,6 @@ export class RoomsWidgetComponent implements OnInit {
 
     if (userName) {
       this.roomDaoService.addNewRoom().subscribe((room: Room) => {
-        this.updateRooms();
         this.joinRoomWithoutform(userName, room.roomId);
       });
     }
@@ -59,15 +61,19 @@ export class RoomsWidgetComponent implements OnInit {
       this.updateRooms();
       user.userId = newUser.userId;
       this.roomHandlerService.joinRoom(user, new Room(userForm.value.roomId));
+
+      this.router.navigate([`/rooms/${this.roomHandlerService.currentRoom.roomId}`]);
     });
   }
 
-  public joinRoomWithoutform(userName: string, roomId: string) {
+  public joinRoomWithoutform(userName: string, roomId: string): void {
     const user = new User(userName);
     this.roomDaoService.addUserToRoom(user.userName, roomId).subscribe((newUser: User) => {
       this.updateRooms();
       user.userId = newUser.userId;
       this.roomHandlerService.joinRoom(user, new Room(roomId));
+
+      this.router.navigate([`/rooms/${this.roomHandlerService.currentRoom.roomId}`]);
     });
   }
 

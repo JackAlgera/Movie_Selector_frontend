@@ -1,27 +1,25 @@
 <div class="container-fluid border my-2">
-  <div class="row justify-content-start m-3">
-      <button type="button" (click)="updateRooms()" class="btn btn-primary">Refresh rooms</button>
-      <button [disabled]="userForm.value.userName == ''" type="button" (click)="addNewRoom(userForm.value.userName)" class="btn btn-primary">Create new room</button>
-      <button [disabled]="!this.roomHandlerService.currentRoom" type="button" (click)="leaveRoom()" class="btn btn-primary">Leave room</button>
-  </div>
-  <div class="row m-3">
-    <form (ngSubmit)="joinRoom(userForm)" #userForm="ngForm">
-      <div class="container-fluid">
-        <div class="row justify-content-center">
-          <div class="col-4">
-            <input type="text" class="form-control" name="userName" id="input-userName" ngModel placeholder="User name">
-          </div>
-          <div class="col-4">
-            <input type="text" class="form-control" name="roomId" id="input-rooomId" ngModel placeholder="Room ID">
-          </div>
-          <div class="col-4">
-            <button [disabled]="this.roomHandlerService.currentUser" type="submit" class="btn btn-primary">Join room</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
+  <form (ngSubmit)="joinRoom(userForm)" #userForm="ngForm">
+    <div class="form-group">
+      <button [disabled]="this.roomHandlerService.currentUser || userForm.value.userName == ''"
+        type="button" (click)="addNewRoom(userForm.value.userName)" class="btn btn-primary">Create new room</button>
+    </div>
+    <div class="form-group">
+      <label for="input-userName">User name</label>
+      <input type="text" class="form-control" name="userName" id="input-userName" ngModel placeholder="User name">
+    </div>
+    <div class="form-group">
+      <label for="input-userName">Room ID</label>
+      <input type="text" class="form-control" name="roomId" id="input-rooomId" ngModel placeholder="Room ID">
+    </div>
+    <div class="form-group">
+      <button type="button" (click)="updateRooms()" class="btn btn-primary mr-2">Refresh</button>
+      <button [disabled]="this.roomHandlerService.currentUser || (userForm.value.roomId == '' || userForm.value.userName == '')" type="submit" class="btn btn-primary ml-2">Join room</button>
+    </div>
+  </form>
+</div>
 
+<div class="container-fluid border my-2">
   <div class="row m-2">
     <table class="table border">
       <thead>
@@ -37,17 +35,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
-</div>
-
-<div class="container-fluid border">
-  <div class="row m-1">
-    <p>Current user name : {{ roomHandlerService.currentUser ? roomHandlerService.currentUser.userName : '' }}</p>
-  </div>
-  <div class="row m-1">
-    <p>Current user ID : {{ roomHandlerService.currentUser ? roomHandlerService.currentUser.userId : '' }}</p>
-  </div>
-  <div class="row m-1">
-    <p>Current room Id : {{ roomHandlerService.currentRoom ? roomHandlerService.currentRoom.roomId : 'No room yet' }}</p>
   </div>
 </div>

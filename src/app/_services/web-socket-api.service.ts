@@ -1,3 +1,5 @@
+import { RoomHandlerService } from './../room-handler/room-handler.service';
+import { RoomDaoService } from './room-dao.service';
 import { FoundMovieMessageDto } from './../_models/foundMovieMessageDto';
 import { MovieChoiceService } from './movie-choice.service';
 import { SelectionMessageDto } from './../_dtos/selection-message-dto';
@@ -10,7 +12,9 @@ export class WebSocketAPI {
     webSocket: WebSocket;
 
     constructor(
-        private movieChoiceService: MovieChoiceService
+        private movieChoiceService: MovieChoiceService,
+        private roomDaoService: RoomDaoService,
+        private roomHandlerService: RoomHandlerService
       ){ }
 
     public openWebSocket(): void {
@@ -27,12 +31,16 @@ export class WebSocketAPI {
       };
 
       this.webSocket.onclose = (event) => {
-        console.log('Close: ', event);
+        if (this.roomHandlerService.currentUser && this.roomHandlerService.currentRoom) {
+          this.roomDaoService.removeUserFromRoom(this.roomHandlerService.currentUser.userId,
+            this.roomHandlerService.currentRoom.roomId).subscribe(data => {
+            this.roomHandlerService.leaveRoom();
+          });
+        }
       };
     }
 
     public sendMessage(selectionMessageDto: SelectionMessageDto): void {
-      console.log('sending message: ', JSON.stringify(selectionMessageDto));
       this.webSocket.send(JSON.stringify(selectionMessageDto));
     }
 

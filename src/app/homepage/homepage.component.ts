@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { WebSocketAPI } from './../_services/web-socket-api.service';
 import { ERoomEvents } from './../room-handler/room-handler-events';
 import { MovieChoiceService } from './../_services/movie-choice.service';
@@ -21,10 +22,18 @@ export class HomepageComponent implements OnInit {
     private movieDaoService: MovieDaoService,
     private movieChoiceService: MovieChoiceService,
     public roomHandlerService: RoomHandlerService,
-    private webSocketAPI: WebSocketAPI
+    private webSocketAPI: WebSocketAPI,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    const roomId = this.route.snapshot.paramMap.get('roomId');
+
+    if (!this.roomHandlerService.currentUser && !this.roomHandlerService.currentRoom) {
+      this.router.navigate(['/rooms']);
+    }
+
     this.isImageLoading = true;
 
     this.movieChoiceService.messageEmitter.subscribe(roomEvent => {

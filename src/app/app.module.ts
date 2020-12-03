@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HomepageComponent } from './homepage/homepage.component';
 import { FormsModule } from '@angular/forms';
 import { FoundMovieComponent } from './found-movie/found-movie.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,14 @@ import { FoundMovieComponent } from './found-movie/found-movie.component';
   imports: [
     HttpClientModule,
     BrowserModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot([
+      { path: '', redirectTo: '/rooms', pathMatch: 'full' },
+      { path: 'rooms', component: RoomsWidgetComponent },
+      { path: 'rooms/:roomId', component: HomepageComponent },
+
+      { path: '**', component: RoomsWidgetComponent },
+    ])
   ],
   providers: [
     MovieDaoService,
