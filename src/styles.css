@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+.text-first {
+  color: #A8DADC;
+}
+
+.text-second {
+  color: #457B9D;
+}
+
+.text-third {
+  color: #F1FAEE;
+}
+
+.text-fourth {
+  color: #E63946;
+}
+
+.text-slightly-overtime {
+  color: #f18181;
+}
+
+.text-overtime {
+  color: #ff0000;
+}
+
+.bg-first {
+  background-color: #A8DADC;
+}
+
+.bg-second {
+  background-color: #457B9D;
+}
+
+.bg-third {
+  background-color: #F1FAEE;
+}
+
+.bg-fourth {
+  background-color: #E63946;
+}
+
+.bg-slightly-overtime {
+  background-color: #fc7575;
+}
+
+.bg-overtime {
+  background-color: #ff1d1d;
+}
+

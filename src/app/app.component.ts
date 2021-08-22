@@ -1,5 +1,4 @@
 import { MovieChoiceService } from './_services/movie-choice.service';
-import { WebSocketAPI } from './_services/web-socket-api.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
@@ -11,16 +10,11 @@ import { NgForm } from '@angular/forms';
 export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
-    private webSocketAPI: WebSocketAPI,
     public movieChoiceService: MovieChoiceService
   ) { }
 
-  ngOnInit(): void {
-    this.webSocketAPI.openWebSocket();
-  }
+  ngOnInit(): void { }
 
-  ngOnDestroy(): void {
-    this.webSocketAPI.closeWebSocket();
-  }
+  ngOnDestroy(): void { }
 
 }

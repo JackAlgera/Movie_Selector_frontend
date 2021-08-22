@@ -1,44 +1,37 @@
-import { WebSocketAPI } from './_services/web-socket-api.service';
-import { RoomsWidgetComponent } from './room-handler/rooms-widget/rooms-widget.component';
+import { RoomNotFoundComponent } from './pages/rooms/room-not-found/room-not-found.component';
+import { RouterModule } from '@angular/router';
+import { TestingComponent } from './pages/_global/testing/testing.component';
+import { TopTitleComponent } from './pages/_global/top-title/top-title.component';
+import { AppRoutingModule } from './pages/_global/app-routing.module';
 import { MovieDaoService } from './_services/movie-dao.service';
-import { RestInterceptorService } from './_services/rest-interceptor.service';
+import { RestInterceptorService } from './_web/rest-interceptor.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HomepageComponent } from './homepage/homepage.component';
-import { FormsModule } from '@angular/forms';
-import { FoundMovieComponent } from './found-movie/found-movie.component';
-import { RouterModule } from '@angular/router';
+import { HomepageComponent } from './pages/home/homepage/homepage.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    RoomsWidgetComponent,
-    FoundMovieComponent
+    TopTitleComponent,
+    TestingComponent,
+    RoomNotFoundComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([
-      { path: '', redirectTo: '/rooms', pathMatch: 'full' },
-      { path: 'rooms', component: RoomsWidgetComponent },
-      { path: 'rooms/:roomId', component: HomepageComponent },
-
-      { path: '**', component: RoomsWidgetComponent },
-    ])
+    AppRoutingModule,
+    ReactiveFormsModule,
+    RouterModule
   ],
   providers: [
     MovieDaoService,
-    WebSocketAPI,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: RestInterceptorService,
-      multi: true
-    }
+    { provide: HTTP_INTERCEPTORS, useClass: RestInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })

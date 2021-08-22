@@ -1,6 +1,3 @@
-import { RoomHandlerService } from './../room-handler/room-handler.service';
-import { RoomDaoService } from 'src/app/_services/room-dao.service';
-import { ERoomEvents } from './../room-handler/room-handler-events';
 import { MovieDaoService } from './movie-dao.service';
 import { Movie } from './../_models/movie';
 import { EventEmitter, Injectable } from '@angular/core';
@@ -9,19 +6,17 @@ import { EventEmitter, Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MovieChoiceService {
-
+/*
   messageEmitter: EventEmitter<string>;
 
   movies: Movie[];
-  private currentMovie: Movie;
+  currentMovie: Movie;
   private currentMoviePos: number;
 
   public finalSelectedMovie: Movie = null;
 
   constructor(
-    private movieDaoService: MovieDaoService,
-    private roomDaoService: RoomDaoService,
-    private roomHandlerService: RoomHandlerService
+    private movieDaoService: MovieDaoService
   ) {
     this.messageEmitter = new EventEmitter<string>();
     this.movies = [];
@@ -30,6 +25,7 @@ export class MovieChoiceService {
 
   public updateMovieList(): void {
     this.movieDaoService.getAllMovies().subscribe((movies: Movie[]) => {
+      console.log('here movie size:', movies.length);
       this.movies = movies;
       this.currentMoviePos = -1;
       this.nextMovie();
@@ -59,7 +55,9 @@ export class MovieChoiceService {
         }
       }
 
-      return this.currentMovie = this.movies[this.currentMoviePos];
+      this.currentMovie = this.movies[this.currentMoviePos];
+      this.messageEmitter.emit(ERoomEvents.NEW_MOVIE);
+      return this.currentMovie;
     }
     // else {
     //   this.updateMovieList();
@@ -68,31 +66,7 @@ export class MovieChoiceService {
     return null;
   }
 
-  public setFoundMovie(): void {
-    this.roomDaoService.getSelectedRoomMovie(this.roomHandlerService.currentRoom.roomId).subscribe((movie: Movie) => {
-      this.finalSelectedMovie = movie;
-      let path = null;
-      if (this.finalSelectedMovie.poster_path != null) {
-        path = this.finalSelectedMovie.poster_path;
-      } else if (this.finalSelectedMovie.backdrop_path != null) {
-        path = this.finalSelectedMovie.backdrop_path;
-      }
-
-      if (path != null) {
-        this.movieDaoService.getMoviePoster(this.finalSelectedMovie.poster_path).subscribe(data => {
-          this.createImageFromBlob(data, this.finalSelectedMovie);
-        });
-      }
-    });
-
-    this.messageEmitter.emit(ERoomEvents.SELECTED_MOVIE);
-  }
-
-  public getCurrentMovie(): Movie {
-    return this.currentMovie;
-  }
-
-  private createImageFromBlob(image: Blob, movie: Movie): void {
+  public createImageFromBlob(image: Blob, movie: Movie): void {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       movie.currentMoviePoster = reader.result;
@@ -102,5 +76,5 @@ export class MovieChoiceService {
        reader.readAsDataURL(image);
     }
   }
-
+*/
 }

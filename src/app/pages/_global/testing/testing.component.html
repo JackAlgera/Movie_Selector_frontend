@@ -1,0 +1,9 @@
+<p>{{ !user ? user.userName + " " + user.userId : 'No user yet' }}
+
+</p>
+<p>
+------------------------------- Rooms ----------------------------------
+</p>
+<p *ngFor="let room of rooms">
+{{ room.roomId }} - {{ room.connectedUsers }}
+</p>
