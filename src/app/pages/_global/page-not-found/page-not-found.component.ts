@@ -1,3 +1,4 @@
+import { RoutingService } from './../../../_utils/routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { TitleService } from './../../../_services/title.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,8 +11,9 @@ import { Component, OnInit } from '@angular/core';
 export class PageNotFoundComponent implements OnInit {
 
   constructor(
-    public titleService: TitleService,
-    private route: ActivatedRoute
+    private titleService: TitleService,
+    private route: ActivatedRoute,
+    public routingService: RoutingService
   ) { }
 
   ngOnInit() {

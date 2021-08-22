@@ -1,3 +1,4 @@
+import { RoutingService } from './../../../_utils/routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { TitleService } from './../../../_services/title.service';
 import { Component, OnInit } from '@angular/core';
@@ -12,6 +13,7 @@ export class RoomNotFoundComponent implements OnInit {
   constructor(
     private titleService: TitleService,
     private route: ActivatedRoute,
+    public routingService: RoutingService
   ) { }
 
   ngOnInit() {

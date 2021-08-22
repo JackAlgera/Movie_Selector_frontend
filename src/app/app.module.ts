@@ -1,3 +1,4 @@
+import { PageNotFoundComponent } from './pages/_global/page-not-found/page-not-found.component';
 import { RoomNotFoundComponent } from './pages/rooms/room-not-found/room-not-found.component';
 import { RouterModule } from '@angular/router';
 import { TestingComponent } from './pages/_global/testing/testing.component';
@@ -19,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomepageComponent,
     TopTitleComponent,
     TestingComponent,
-    RoomNotFoundComponent
+    RoomNotFoundComponent,
+    PageNotFoundComponent
   ],
   imports: [
     HttpClientModule,

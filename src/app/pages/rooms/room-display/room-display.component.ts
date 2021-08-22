@@ -24,7 +24,6 @@ export class RoomDisplayComponent implements OnInit {
     this.checkIfRoomExists();
   }
 
-
   private checkIfRoomExists() : boolean {
     this.route.paramMap.subscribe(params => {
       this.roomDaoService.getRoom(params.get('roomId')).subscribe(
