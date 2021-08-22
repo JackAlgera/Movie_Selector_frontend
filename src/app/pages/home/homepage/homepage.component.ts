@@ -1,3 +1,4 @@
+import { User } from 'src/app/_models/user';
 import { UserService } from './../../../_services/user.service';
 import { Room } from './../../../_models/room';
 import { RoomDaoService } from './../../../_web/_daos/room-dao.service';
@@ -38,11 +39,14 @@ export class HomepageComponent implements OnInit {
   }
 
   public onSubmit() : void {
-    if (!this.userService.getUser()) {
-      this.userService.setUser(this.userInputForm.value.userName);
-    }
-    var user = this.userService.getUser();
+    this.userService.setUser(this.userInputForm.value.userName).subscribe(_ => {}, _ => {},
+      () => {
+        this.handleRoomChange(this.userService.getUser());
+      }
+    );
+  }
 
+  private handleRoomChange(user: User) : void {
     if (!this.userInputForm.value.roomId) {
       this.roomDaoService.createNewRoom().subscribe((newRoom: Room) => {
         this.roomDaoService.addUserToRoom(user.userName, user.userId, newRoom.roomId).subscribe( _ => {
@@ -50,7 +54,17 @@ export class HomepageComponent implements OnInit {
         })
       });
     } else {
-      this.router.navigate([`/rooms/${this.userInputForm.value.roomId}`], {});
+      var roomId = this.userInputForm.value.roomId;
+      this.roomDaoService.getRoom(roomId).subscribe(
+        _ => {
+          this.roomDaoService.addUserToRoom(user.userName, user.userId, roomId).subscribe( _ => {
+            this.router.navigateByUrl(`/rooms/${roomId}`, {})
+          })
+        },
+        error => {
+          this.router.navigate([`/rooms/${roomId}/not-found`], {});
+        }
+      )
     }
   }
 

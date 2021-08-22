@@ -29,4 +29,12 @@ export class TestingComponent implements OnInit {
     , 3000)
   }
 
+  public getConnectedUsersString(room: Room) : string {
+    var connectedUsersStr = '';
+    room.connectedUsers.forEach((user: User) => {
+      connectedUsersStr += `${user.userName}: ${user.userId} +`;
+    });
+    return connectedUsersStr;
+  }
+
 }

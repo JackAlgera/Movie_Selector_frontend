@@ -1,3 +1,5 @@
+import { ActivatedRoute } from '@angular/router';
+import { TitleService } from './../../../_services/title.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomNotFoundComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private titleService: TitleService,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
+    this.titleService.setData(this.route.snapshot.data['title'], this.route.snapshot.data['message']);
   }
 
 }
