@@ -16,4 +16,8 @@ constructor(
     return this.httpClient.post<User>(`users?userName=${userName}`, { responseType: 'json' });
   }
 
+  public getUsersInRoom(roomId: string): Observable<User[]> {
+    return this.httpClient.get<User[]>(`/rooms/${roomId}/users`);
+  }
+
 }

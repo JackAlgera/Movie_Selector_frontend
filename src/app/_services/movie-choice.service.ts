@@ -1,4 +1,4 @@
-import { MovieDaoService } from './movie-dao.service';
+import { MovieDaoService } from '../_web/_daos/movie-dao.service';
 import { Movie } from './../_models/movie';
 import { EventEmitter, Injectable } from '@angular/core';
 
