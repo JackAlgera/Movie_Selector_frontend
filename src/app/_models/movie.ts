@@ -2,7 +2,9 @@ export class Movie {
   id: number;
   title: string;
   overview: string;
-  releaseDate: string;
-  genres: string[];
-  homepage: string;
+  release_date: string;
+  genre_ids: number[];
+  backdrop_path: string;
+
+  currentMoviePoster: any;
 }

@@ -1,5 +1,5 @@
+import { Movie } from './../../_models/movie';
 import { Filter } from './../../_models/filter';
-import { Movie } from '../../_models/movie';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,6 +8,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MovieDaoService {
+
+  private MOVIE_POSTER_URL = 'https://image.tmdb.org/t/p/w500';
+  private API_KEY = "096873bdfea4d97d0af6b7ab7faa38bb";
 
   constructor(
     private httpClient: HttpClient
@@ -18,4 +21,7 @@ export class MovieDaoService {
     return this.httpClient.post<Movie[]>(`movies`, JSON.stringify([new Filter('primary_release_date.gte', '2021')]), { headers: headers });
   }
 
+  public getMoviePoster(movie: Movie) : Observable<Blob> {
+    return this.httpClient.get(`${this.MOVIE_POSTER_URL}${movie.poster_path}?api_key=${this.API_KEY}`, { responseType: 'blob', headers: { SKIP_INTERCEPTOR: '' } });
+  }
 }

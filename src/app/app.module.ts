@@ -1,3 +1,5 @@
+import { SelectorMovieDisplayComponent } from './pages/selector/selector-movie-display/selector-movie-display.component';
+import { SelectorHandlerComponent } from './pages/selector/selector-handler/selector-handler.component';
 import { RoomDisplayComponent } from './pages/rooms/room-display/room-display.component';
 import { ViewConnectedUsersComponent } from './pages/rooms/room-display/view-connected-users/view-connected-users.component';
 import { PageNotFoundComponent } from './pages/_global/page-not-found/page-not-found.component';
@@ -25,7 +27,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RoomNotFoundComponent,
     PageNotFoundComponent,
     ViewConnectedUsersComponent,
-    RoomDisplayComponent
+    RoomDisplayComponent,
+    SelectorHandlerComponent,
+    SelectorMovieDisplayComponent
   ],
   imports: [
     HttpClientModule,

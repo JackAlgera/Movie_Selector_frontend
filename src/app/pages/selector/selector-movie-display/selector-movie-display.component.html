@@ -1,0 +1,8 @@
+<div class="container-fluid p-0">
+  <div class="row m-0 justify-content-center">
+    <div *ngIf="displayedMovie" class="col p-0 text-center">
+      <p>{{ displayedMovie.title }}</p>
+      <img src="{{ displayedMovie.currentMoviePoster ? displayedMovie.currentMoviePoster : 'assets/images/Image_not_found.jpeg' }}" class="card-img-top">
+    </div>
+  </div>
+</div>
