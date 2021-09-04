@@ -1,10 +1,10 @@
 export class Movie {
-  id: number;
+  id: string;
   title: string;
   overview: string;
   release_date: string;
   genre_ids: number[];
-  backdrop_path: string;
+  poster_path: string;
 
   currentMoviePoster: any;
 }

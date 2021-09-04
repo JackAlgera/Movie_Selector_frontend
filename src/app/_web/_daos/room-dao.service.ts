@@ -30,14 +30,14 @@ export class RoomDaoService {
     return this.httpClient.post<User>(`rooms/${roomId}/users?userName=${userName}&userId=${userId}`, { responseType: 'json'});
   }
 
+  public likeMovie(roomId: string, movieId: string, userId: string, likeRating: number): Observable<boolean> {
+    return this.httpClient.post<boolean>(`rooms/${roomId}/movies/${movieId}/like?userId=${userId}&likeRating=${likeRating}`, { responseType: 'json' });
+  }
+
 
 
   public removeUserFromRoom(userId: string, roomId: string): Observable<User> {
     return this.httpClient.delete<User>(`rooms/${roomId}/users/${userId}`, { responseType: 'json'});
-  }
-
-  public getSelectedRoomMovie(roomId: string): Observable<Movie> {
-    return this.httpClient.get<Movie>(`rooms/${roomId}/foundMovie`);
   }
 
 }

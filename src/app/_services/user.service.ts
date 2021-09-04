@@ -1,3 +1,4 @@
+import { RoutingService } from './../_utils/routing.service';
 import { UserDaoService } from './../_web/_daos/user-dao.service';
 import { User } from './../_models/user';
 import { Injectable } from '@angular/core';
@@ -11,7 +12,8 @@ export class UserService {
 private user: User;
 
 constructor(
-  private userDaoService: UserDaoService
+  private userDaoService: UserDaoService,
+  private routingService: RoutingService
 ) { }
 
   // TODO : use a cookie instead / or as local cache
@@ -31,10 +33,21 @@ constructor(
   }
 
   public getUser() : User {
+    this.checkIfUserSet();
+
     if (!this.user) {
       this.user = new User('', '');
     }
 
     return this.user;
+  }
+
+  private checkIfUserSet() : void {
+    if (this.user && this.user.userId !== '') {
+      return;
+    }
+
+    this.routingService.routeToHome();
+    return;
   }
 }

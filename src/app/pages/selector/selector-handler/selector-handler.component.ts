@@ -1,6 +1,10 @@
+import { RoutingService } from './../../../_utils/routing.service';
+import { User } from './../../../_models/user';
+import { RoomDaoService } from './../../../_web/_daos/room-dao.service';
+import { UserService } from './../../../_services/user.service';
 import { MovieDaoService } from './../../../_web/_daos/movie-dao.service';
 import { Movie } from './../../../_models/movie';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-selector-handler',
@@ -14,11 +18,20 @@ export class SelectorHandlerComponent implements OnInit {
 
   displayedMovie: Movie;
 
+  @Input() roomId: string;
+  user: User;
+
   constructor(
-    private movieDaoService: MovieDaoService
+    private movieDaoService: MovieDaoService,
+    private userService: UserService,
+    private roomDaoService: RoomDaoService,
+    private routingService: RoutingService
   ) { }
 
   ngOnInit() {
+    console.log("here");
+    this.user = this.userService.getUser();
+
     this.currentMovieIndex = -1;
 
     this.movieDaoService.getAllMovies().subscribe((movies: Movie[]) => {
@@ -42,11 +55,21 @@ export class SelectorHandlerComponent implements OnInit {
       )
     } else {
       this.displayedMovie = this.moviesToDisplayQueue[this.currentMovieIndex];
-      this.movieDaoService.getMoviePoster(this.displayedMovie).subscribe(data => {
+      this.movieDaoService.getMoviePoster(this.displayedMovie.poster_path).subscribe(data => {
         this.createImageFromBlob(data, this.displayedMovie);
       });
       return ;
     }
+  }
+
+  public rateLikeMovie(likeRating : number) : void {
+    this.roomDaoService.likeMovie(this.roomId, this.displayedMovie.id, this.user.userId, likeRating).subscribe((foundMovie: boolean) => {
+      if (foundMovie) {
+        this.routingService.routeToMovieFoundPage(this.roomId);
+      } else {
+        this.showNextMovie();
+      }
+    });
   }
 
   private createImageFromBlob(image: Blob, movie: Movie) : void {
@@ -59,5 +82,4 @@ export class SelectorHandlerComponent implements OnInit {
        reader.readAsDataURL(image);
     }
   }
-
 }

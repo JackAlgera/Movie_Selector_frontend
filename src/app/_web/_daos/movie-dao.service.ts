@@ -21,7 +21,7 @@ export class MovieDaoService {
     return this.httpClient.post<Movie[]>(`movies`, JSON.stringify([new Filter('primary_release_date.gte', '2021')]), { headers: headers });
   }
 
-  public getMoviePoster(movie: Movie) : Observable<Blob> {
-    return this.httpClient.get(`${this.MOVIE_POSTER_URL}${movie.poster_path}?api_key=${this.API_KEY}`, { responseType: 'blob', headers: { SKIP_INTERCEPTOR: '' } });
+  public getMoviePoster(posterPath: string) : Observable<Blob> {
+    return this.httpClient.get(`${this.MOVIE_POSTER_URL}${posterPath}?api_key=${this.API_KEY}`, { responseType: 'blob', headers: { SKIP_INTERCEPTOR: '' } });
   }
 }

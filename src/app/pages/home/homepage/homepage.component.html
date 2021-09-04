@@ -1,24 +1,23 @@
 <div class="container-fluid p-0">
   <div class="row m-0 justify-content-center">
-    <div class="col-4 px-3 pt-2 pb-3 bg-third rounded">
+    <div class="col-4 p-3 bg-third rounded">
       <form [formGroup]="userInputForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label>Name</label>
-          <input class="form-control" formControlName="userName" type="text">
-        </div>
-        <div *ngIf="userInputForm.controls['userName'].invalid && (userInputForm.controls['userName'].dirty || userInputForm.controls['userName'].touched)" class="alert alert-danger">
-          <div *ngIf="userInputForm.controls['userName'].errors.required">
-            Name is required.
+          <div class="form-floating mb-3">
+            <input class="form-control" formControlName="userName" id="nameInput" type="text" placeholder="name">
+            <label for="nameInput">Name</label>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Room id</label>
-          <input class="form-control" formControlName="roomId" type="text">
+          <div class="form-floating mb-3">
+            <input class="form-control" formControlName="roomId" id="roomIdInput" type="text" placeholder="roomId">
+            <label for="roomIdInput">Room id</label>
+          </div>
         </div>
 
         <button type="submit" [disabled]="!userInputForm.controls['roomId'].invalid || (userInputForm.controls['roomId'].invalid && userInputForm.controls['userName'].invalid)" class="btn btn-success">Create room</button>
-        <button type="submit" [disabled]="userInputForm.pristine || userInputForm.invalid" class="btn btn-success ml-2">Join room</button>
+        <button type="submit" [disabled]="userInputForm.pristine || userInputForm.invalid" class="btn btn-success mx-2">Join room</button>
       </form>
     </div>
   </div>

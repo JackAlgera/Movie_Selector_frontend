@@ -17,16 +17,12 @@ export class RoomDisplayComponent implements OnInit {
     private titleService: TitleService,
     private route: ActivatedRoute,
     private roomDaoService: RoomDaoService,
-    private router: Router,
-    private movieDaoService: MovieDaoService
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.titleService.setData(this.route.snapshot.data['title'], this.route.snapshot.data['message']);
     this.checkIfRoomExists();
-    this.movieDaoService.getAllMovies().subscribe(movies => {
-      console.log(movies)
-    });
   }
 
   private checkIfRoomExists() : boolean {

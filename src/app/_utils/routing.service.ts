@@ -11,7 +11,12 @@ constructor(
 ) { }
 
   public routeToHome() {
+    console.log('routing home');
     this.router.navigateByUrl('');
+  }
+
+  public routeToMovieFoundPage(roomId: string) {
+    this.router.navigateByUrl(`/rooms/${roomId}/found-movie`);
   }
 
 }
