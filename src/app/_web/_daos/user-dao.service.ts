@@ -17,7 +17,7 @@ constructor(
   }
 
   public getUsersInRoom(roomId: string): Observable<User[]> {
-    return this.httpClient.get<User[]>(`/rooms/${roomId}/users`);
+    return this.httpClient.get<User[]>(`rooms/${roomId}/users`);
   }
 
 }

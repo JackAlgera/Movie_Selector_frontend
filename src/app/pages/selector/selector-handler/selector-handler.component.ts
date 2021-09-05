@@ -52,9 +52,7 @@ export class SelectorHandlerComponent implements OnInit {
       this.updateMovies();
     } else {
       this.displayedMovie = this.moviesToDisplayQueue[this.currentMovieIndex];
-      this.movieDaoService.getMoviePoster(this.displayedMovie.poster_path).subscribe(data => {
-        this.createImageFromBlob(data, this.displayedMovie);
-      });
+      this.movieDaoService.addMoviePoster(this.displayedMovie);
     }
   }
 
@@ -66,17 +64,6 @@ export class SelectorHandlerComponent implements OnInit {
         this.showNextMovie();
       }
     });
-  }
-
-  private createImageFromBlob(image: Blob, movie: Movie) : void {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => {
-      movie.currentMoviePoster = reader.result;
-    }, false);
-
-    if (image) {
-       reader.readAsDataURL(image);
-    }
   }
 
   public updateMovies() {

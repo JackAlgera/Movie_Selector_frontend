@@ -26,7 +26,19 @@ export class MovieDaoService {
     return this.httpClient.get<Genre[]>(`genres`)
   }
 
-  public getMoviePoster(posterPath: string) : Observable<Blob> {
-    return this.httpClient.get(`${this.MOVIE_POSTER_URL}${posterPath}?api_key=${this.API_KEY}`, { responseType: 'blob', headers: { SKIP_INTERCEPTOR: '' } });
+  public addMoviePoster(movie: Movie) {
+    this.httpClient.get(`${this.MOVIE_POSTER_URL}${movie.poster_path}?api_key=${this.API_KEY}`, { responseType: 'blob', headers: { SKIP_INTERCEPTOR: '' } })
+                    .subscribe(data => this.createImageFromBlob(data, movie));
+  }
+
+  private createImageFromBlob(image: Blob, movie: Movie) : void {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      movie.currentMoviePoster = reader.result;
+    }, false);
+
+    if (image) {
+       reader.readAsDataURL(image);
+    }
   }
 }

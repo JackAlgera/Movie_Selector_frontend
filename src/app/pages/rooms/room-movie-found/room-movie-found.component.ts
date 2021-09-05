@@ -1,3 +1,5 @@
+import { TitleService } from './../../../_services/title.service';
+import { MovieDaoService } from './../../../_web/_daos/movie-dao.service';
 import { RoutingService } from './../../../_utils/routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { RoomDaoService } from './../../../_web/_daos/room-dao.service';
@@ -11,23 +13,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomMovieFoundComponent implements OnInit {
 
-  roomId: string;
   selectedMovie: Movie = null;
 
   constructor(
     private roomDaoService: RoomDaoService,
+    private movieDaoService: MovieDaoService,
+    private titleService: TitleService,
     private route: ActivatedRoute,
-    private routingService: RoutingService
+    public routingService: RoutingService
   ) { }
 
   ngOnInit() {
+    this.titleService.setData(this.route.snapshot.data['title'], this.route.snapshot.data['message']);
+
     this.route.paramMap.subscribe(params => {
       this.roomDaoService.getRoom(params.get('roomId')).subscribe(
         _ => {
-          this.roomId = params.get('roomId');
-          this.roomDaoService.getFoundMovie(this.roomId).subscribe(
+          this.roomDaoService.getFoundMovie(params.get('roomId')).subscribe(
             (movie: Movie) => {
               this.selectedMovie = movie;
+              this.movieDaoService.addMoviePoster(this.selectedMovie);
             },
             error => {
               this.routingService.routeToHome();
