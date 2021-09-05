@@ -1,3 +1,4 @@
+import { Genre } from './../../_models/genre';
 import { Movie } from './../../_models/movie';
 import { Filter } from './../../_models/filter';
 import { Injectable } from '@angular/core';
@@ -16,9 +17,13 @@ export class MovieDaoService {
     private httpClient: HttpClient
   ) { }
 
-  public getAllMovies(): Observable<Movie[]> {
+  public getAllMovies(...filters: Filter[]): Observable<Movie[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    return this.httpClient.post<Movie[]>(`movies`, JSON.stringify([new Filter('primary_release_date.gte', '2021')]), { headers: headers });
+    return this.httpClient.post<Movie[]>(`movies`, JSON.stringify(filters.filter(f => f.val)), { headers: headers });
+  }
+
+  public getAllGenres(): Observable<Genre[]> {
+    return this.httpClient.get<Genre[]>(`genres`)
   }
 
   public getMoviePoster(posterPath: string) : Observable<Blob> {

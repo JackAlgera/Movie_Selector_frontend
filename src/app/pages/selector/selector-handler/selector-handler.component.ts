@@ -1,3 +1,5 @@
+import { FilterTypes } from './../../../_models/filter-types.enum';
+import { Genre } from './../../../_models/genre';
 import { RoutingService } from './../../../_utils/routing.service';
 import { User } from './../../../_models/user';
 import { RoomDaoService } from './../../../_web/_daos/room-dao.service';
@@ -5,6 +7,7 @@ import { UserService } from './../../../_services/user.service';
 import { MovieDaoService } from './../../../_web/_daos/movie-dao.service';
 import { Movie } from './../../../_models/movie';
 import { Component, Input, OnInit } from '@angular/core';
+import { Filter } from 'src/app/_models/filter';
 
 @Component({
   selector: 'app-selector-handler',
@@ -12,6 +15,9 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./selector-handler.component.scss']
 })
 export class SelectorHandlerComponent implements OnInit {
+
+  allGenres: Genre[];
+  selectedGenre: Genre = null;
 
   moviesToDisplayQueue: Movie[];
   currentMovieIndex: number;
@@ -29,36 +35,26 @@ export class SelectorHandlerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("here");
     this.user = this.userService.getUser();
 
-    this.currentMovieIndex = -1;
+    this.movieDaoService.getAllGenres().subscribe((genres: Genre[]) => {
+      this.allGenres = genres;
+      console.log(this.allGenres);
+    });
 
-    this.movieDaoService.getAllMovies().subscribe((movies: Movie[]) => {
-      this.moviesToDisplayQueue = movies;
-      this.showNextMovie();
-    })
+    this.updateMovies();
   }
 
   private showNextMovie() : void {
     this.currentMovieIndex += 1;
 
     if (this.moviesToDisplayQueue.length <= 0 || this.currentMovieIndex >= this.moviesToDisplayQueue.length) {
-        this.movieDaoService.getAllMovies().subscribe((movies: Movie[]) => {
-          this.moviesToDisplayQueue = movies;
-          this.currentMovieIndex = -1;
-        },
-        _ => {},
-        () => {
-          this.showNextMovie();
-        }
-      )
+      this.updateMovies();
     } else {
       this.displayedMovie = this.moviesToDisplayQueue[this.currentMovieIndex];
       this.movieDaoService.getMoviePoster(this.displayedMovie.poster_path).subscribe(data => {
         this.createImageFromBlob(data, this.displayedMovie);
       });
-      return ;
     }
   }
 
@@ -81,5 +77,17 @@ export class SelectorHandlerComponent implements OnInit {
     if (image) {
        reader.readAsDataURL(image);
     }
+  }
+
+  public updateMovies() {
+    console.log(this.selectedGenre);
+    this.currentMovieIndex = -1;
+
+    this.movieDaoService.getAllMovies(new Filter(FilterTypes.GENRE, this.selectedGenre ? this.selectedGenre.id : null),
+                                      new Filter(FilterTypes.RELEASE_DATE_GTE, '2020')
+                                    ).subscribe((movies: Movie[]) => {
+      this.moviesToDisplayQueue = movies;
+      this.showNextMovie();
+    })
   }
 }
