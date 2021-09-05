@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: '', component: HomepageComponent, data: { title: "Movie Selector", message: "" } },
   { path: 'rooms/:roomId', component: RoomDisplayComponent, data: { title: "Movie Selector", message: "" } },
   { path: 'rooms/:roomId/not-found', component: RoomNotFoundComponent, data: { title: "Movie Selector", message: "Room not found" } },
-  { path: 'rooms/:roomId/found-movie', component: RoomMovieFoundComponent, data: { title: "Movie Selector", message: "Room not found" } },
+  { path: 'rooms/:roomId/found-movie', component: RoomMovieFoundComponent, data: { title: "Movie Selector", message: "" } },
 
   { path: '**', component: PageNotFoundComponent, data: { title: "Movie Selector", message: "Looks like the page doesn't exist... yet !" } }
 ]

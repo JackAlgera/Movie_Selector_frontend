@@ -1,9 +1,9 @@
-import { Movie } from '../../_models/movie';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Room } from '../../_models/room';
 import { User } from '../../_models/user';
+import { Movie } from '../../_models/movie';
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +34,12 @@ export class RoomDaoService {
     return this.httpClient.post<boolean>(`rooms/${roomId}/movies/${movieId}/like?userId=${userId}&likeRating=${likeRating}`, { responseType: 'json' });
   }
 
-
-
   public removeUserFromRoom(userId: string, roomId: string): Observable<User> {
     return this.httpClient.delete<User>(`rooms/${roomId}/users/${userId}`, { responseType: 'json'});
+  }
+
+  public getFoundMovie(roomId: string): Observable<Movie> {
+    return this.httpClient.get<Movie>(`rooms/${roomId}/foundMovie`);
   }
 
 }

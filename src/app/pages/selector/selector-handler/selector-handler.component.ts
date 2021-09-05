@@ -83,7 +83,7 @@ export class SelectorHandlerComponent implements OnInit {
     console.log(this.selectedGenre);
     this.currentMovieIndex = -1;
 
-    this.movieDaoService.getAllMovies(new Filter(FilterTypes.GENRE, this.selectedGenre ? this.selectedGenre.id : null),
+    this.movieDaoService.getAllMovies(new Filter(FilterTypes.GENRE, this.selectedGenre ? this.selectedGenre.id.toString() : null),
                                       new Filter(FilterTypes.RELEASE_DATE_GTE, '2020')
                                     ).subscribe((movies: Movie[]) => {
       this.moviesToDisplayQueue = movies;

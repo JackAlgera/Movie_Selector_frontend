@@ -15,8 +15,8 @@ export class RoomDisplayComponent implements OnInit {
 
   constructor(
     private titleService: TitleService,
-    private route: ActivatedRoute,
     private roomDaoService: RoomDaoService,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 

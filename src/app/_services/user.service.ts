@@ -33,12 +33,8 @@ constructor(
   }
 
   public getUser() : User {
+    console.log("HERE");
     this.checkIfUserSet();
-
-    if (!this.user) {
-      this.user = new User('', '');
-    }
-
     return this.user;
   }
 
@@ -47,6 +43,7 @@ constructor(
       return;
     }
 
+    this.user = new User('', '');
     this.routingService.routeToHome();
     return;
   }

@@ -19,4 +19,8 @@ constructor(
     this.router.navigateByUrl(`/rooms/${roomId}/found-movie`);
   }
 
+  public routeToRoomNotFoundPage(roomId: string) {
+    this.router.navigateByUrl(`/rooms/${roomId}/not-found`);
+  }
+
 }

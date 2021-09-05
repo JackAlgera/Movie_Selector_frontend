@@ -1,3 +1,8 @@
-<p>
-  room-movie-found works!
-</p>
+<div class="container-fluid p-0">
+  <div class="row m-0 justify-content-center">
+    <div *ngIf="selectedMovie" class="col p-0 text-center">
+      <p>{{ selectedMovie.title }}</p>
+      <img src="{{ selectedMovie.currentMoviePoster ? displayedMovie.currentMoviePoster : 'assets/images/Image_not_found.jpeg' }}" style="max-width: 200px;" class="card-img-top">
+    </div>
+  </div>
+</div>
