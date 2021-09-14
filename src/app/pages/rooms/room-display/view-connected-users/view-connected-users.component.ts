@@ -23,9 +23,6 @@ export class ViewConnectedUsersComponent implements OnInit {
       this.userDaoService.getUsersInRoom(this.roomId).subscribe(
         (connectedUsers: User[]) => {
           this.connectedUsers = connectedUsers;
-        },
-        error => {
-          this.routingService.routeToHome();
         }), 3000)
   }
 }

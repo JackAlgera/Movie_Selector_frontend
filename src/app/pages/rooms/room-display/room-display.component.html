@@ -1,6 +1,6 @@
 <div class="container-fluid p-0">
   <div class="row m-0 justify-content-center">
-    <div class="col-3 p-0 text-center">
+    <div *ngIf="roomId" class="col-3 p-0 text-center">
       <app-selector-handler [roomId]="roomId"></app-selector-handler>
     </div>
   </div>

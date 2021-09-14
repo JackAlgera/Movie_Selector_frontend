@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomDisplayComponent implements OnInit {
 
-  roomId: string = '';
+  roomId: string = null;
 
   constructor(
     private titleService: TitleService,

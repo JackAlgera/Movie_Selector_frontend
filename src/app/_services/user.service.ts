@@ -33,7 +33,6 @@ constructor(
   }
 
   public getUser() : User {
-    console.log("HERE");
     this.checkIfUserSet();
     return this.user;
   }

@@ -17,9 +17,13 @@ export class MovieDaoService {
     private httpClient: HttpClient
   ) { }
 
-  public getAllMovies(...filters: Filter[]): Observable<Movie[]> {
+  public getAllMovies(userId: string, roomId: string, ...filters: Filter[]): Observable<Movie[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    return this.httpClient.post<Movie[]>(`movies`, JSON.stringify(filters.filter(f => f.val)), { headers: headers });
+    return this.httpClient.post<Movie[]>(`room/${roomId}/users/${userId}/movies`, JSON.stringify(filters.filter(f => f.val)), { headers: headers });
+  }
+
+  public getUnratedMoviesForUser(roomId: string, userId: string): Observable<Movie[]> {
+    return this.httpClient.get<Movie[]>(`room/${roomId}/users/${userId}/unrated-movies`)
   }
 
   public getAllGenres(): Observable<Genre[]> {

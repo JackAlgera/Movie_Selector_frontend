@@ -1,9 +1,15 @@
 <div class="container-fluid p-0">
 
+  <div *ngIf="!selection.shouldPickRatedMovies" class="row m-0 justify-content-center">
+    <div class="col p-0 my-2">
+      <p>Your friends liked liked some of these movies !</p>
+    </div>
+  </div>
+
   <div class="row m-0 justify-content-center">
     <div class="col p-0">
-      <select class="form-select" [(ngModel)]="selectedGenre" (ngModelChange)="updateMovies()">
-        <option [ngValue]="null" disabled>Pick a genre</option>
+      <select class="form-select" [(ngModel)]="selectedGenre" (ngModelChange)="updateMovies(true)">
+        <option [ngValue]="null">All genres</option>
         <option *ngFor="let genre of allGenres" [ngValue]="genre">{{ genre.name }}</option>
       </select>
     </div>
