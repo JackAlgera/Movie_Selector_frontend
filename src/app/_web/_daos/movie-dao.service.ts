@@ -1,3 +1,4 @@
+import { ConfigService } from './../../_utils/config.service';
 import { Genre } from './../../_models/genre';
 import { Movie } from './../../_models/movie';
 import { Filter } from './../../_models/filter';
@@ -14,6 +15,7 @@ export class MovieDaoService {
   private API_KEY = "096873bdfea4d97d0af6b7ab7faa38bb";
 
   constructor(
+    private configService: ConfigService,
     private httpClient: HttpClient
   ) { }
 
@@ -23,7 +25,7 @@ export class MovieDaoService {
   }
 
   public getUnratedMoviesForUser(roomId: string, userId: string): Observable<Movie[]> {
-    return this.httpClient.get<Movie[]>(`room/${roomId}/users/${userId}/unrated-movies`)
+    return this.httpClient.get<Movie[]>(`room/${roomId}/users/${userId}/unrated-movies?maxMoviesPerRequest=${this.configService.getValue("maxMoviesPerRequest", 10)}`)
   }
 
   public getAllGenres(): Observable<Genre[]> {
