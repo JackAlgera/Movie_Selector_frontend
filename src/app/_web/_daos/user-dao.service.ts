@@ -12,12 +12,16 @@ constructor(
   private httpClient: HttpClient
 ) { }
 
-  public generateNewUser(userName: string): Observable<User> {
-    return this.httpClient.post<User>(`users?userName=${userName}`, { responseType: 'json' });
+  public getUser(userId: string): Observable<User> {
+    return this.httpClient.get<User>(`users/${userId}`);
   }
 
-  public getUsersInRoom(roomId: string): Observable<User[]> {
-    return this.httpClient.get<User[]>(`rooms/${roomId}/users`);
+  public generateNewUser(userName: string): Observable<User> {
+    return this.httpClient.post<User>(`users`, { userName: `${userName}` }, { responseType: 'json' });
+  }
+
+  public rateMovie(userId: string, movieId: string, rating: number): Observable<boolean> {
+    return this.httpClient.post<boolean>(`users/${userId}/rate-movie?movieId=${movieId}&rating=${rating}`, { responseType: 'json' });
   }
 
 }

@@ -28,7 +28,7 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setData(this.route.snapshot.data['title'], this.route.snapshot.data['message']);
+    this.titleService.setDataWithRoute(this.route);
   }
 
   public createForm() : void {
@@ -40,32 +40,30 @@ export class HomepageComponent implements OnInit {
 
   public onSubmit() : void {
     this.userService.setUser(this.userInputForm.value.userName).subscribe(_ => {}, _ => {},
-      () => {
-        this.handleRoomChange(this.userService.getUser());
-      }
+      () => this.handleRoomChange()
     );
   }
 
-  private handleRoomChange(user: User) : void {
+  private handleRoomChange() : void {
     if (!this.userInputForm.value.roomId) {
-      this.roomDaoService.createNewRoom().subscribe((newRoom: Room) => {
-        this.roomDaoService.addUserToRoom(user.userName, user.userId, newRoom.roomId).subscribe( _ => {
-          this.router.navigateByUrl(`/rooms/${newRoom.roomId}`, {})
-        })
+      this.roomDaoService.generateNewRoom().subscribe((newRoom: Room) => {
+        this.addUserToRoom(newRoom.roomId);
       });
     } else {
       var roomId = this.userInputForm.value.roomId;
       this.roomDaoService.getRoom(roomId).subscribe(
-        _ => {
-          this.roomDaoService.addUserToRoom(user.userName, user.userId, roomId).subscribe( _ => {
-            this.router.navigateByUrl(`/rooms/${roomId}`, {})
-          })
-        },
-        error => {
-          this.router.navigate([`/rooms/${roomId}/not-found`], {});
-        }
+        _     => this.addUserToRoom(roomId),
+        error => this.router.navigate([`/rooms/${roomId}/not-found`], {})
       )
     }
   }
 
+  private addUserToRoom(roomId: string) {
+    this.roomDaoService.addUserToRoom(this.userService.getUser().userId, roomId).subscribe(
+      _ => {
+        this.userService.setRoomId(roomId);
+        this.router.navigateByUrl(`/rooms/${roomId}`, {});
+      }
+    )
+  }
 }

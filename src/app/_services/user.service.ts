@@ -1,6 +1,6 @@
+import { User } from 'src/app/_models/user';
 import { RoutingService } from './../_utils/routing.service';
 import { UserDaoService } from './../_web/_daos/user-dao.service';
-import { User } from './../_models/user';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-private user: User;
+private user: User = null;
 
 constructor(
   private userDaoService: UserDaoService,
@@ -22,10 +22,11 @@ constructor(
 
     request.subscribe((user: User) => {
       if (!this.user) {
-        this.user = new User(user.userName, user.userId);
+        this.user = new User(user.userName, user.userId, user.roomId);
       } else {
         this.user.userName = user.userName;
         this.user.userId = user.userId;
+        this.user.roomId = user.roomId;
       }
     })
 
@@ -33,17 +34,17 @@ constructor(
   }
 
   public getUser() : User {
-    this.checkIfUserSet();
+    if (!this.checkIfUserSet()) {
+      this.routingService.routeToHome();
+    }
     return this.user;
   }
 
-  private checkIfUserSet() : void {
-    if (this.user && this.user.userId !== '') {
-      return;
-    }
+  private checkIfUserSet() : boolean {
+    return (this.user && this.user.userId !== '');
+  }
 
-    this.user = new User('', '');
-    this.routingService.routeToHome();
-    return;
+  public setRoomId(roomId: string) {
+    this.user.roomId = roomId;
   }
 }

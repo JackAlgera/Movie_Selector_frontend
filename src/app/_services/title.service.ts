@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class TitleService {
 
-  public title: string = ''
+  public title: string   = ''
   public message: string = ''
 
   constructor() { }
@@ -19,8 +20,12 @@ export class TitleService {
   }
 
   public setData(title: string, message: string) : void {
-    this.title = title;
-    this.message = message;
+    this.title    = title;
+    this.message  = message;
   }
 
+  public setDataWithRoute(route: ActivatedRoute) : void {
+    this.title    = route.snapshot.data['title'];
+    this.message  = route.snapshot.data['message'];
+  }
 }

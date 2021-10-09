@@ -22,5 +22,4 @@ constructor(
   public routeToRoomNotFoundPage(roomId: string) {
     this.router.navigateByUrl(`/rooms/${roomId}/not-found`);
   }
-
 }

@@ -1,9 +1,8 @@
+import { User } from 'src/app/_models/user';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Room } from '../../_models/room';
-import { User } from '../../_models/user';
-import { Movie } from '../../_models/movie';
 
 @Injectable({
   providedIn: 'root'
@@ -22,24 +21,20 @@ export class RoomDaoService {
     return this.httpClient.get<Room[]>(`rooms`);
   }
 
-  public createNewRoom(): Observable<Room> {
+  public generateNewRoom(): Observable<Room> {
     return this.httpClient.post<Room>(`rooms`, { responseType: 'json' });
   }
 
-  public addUserToRoom(userName: string, userId: string, roomId: string): Observable<User> {
-    return this.httpClient.post<User>(`rooms/${roomId}/users?userName=${userName}&userId=${userId}`, { responseType: 'json'});
+  public addUserToRoom(userId: string, roomId: string): Observable<User> {
+    return this.httpClient.put<User>(`rooms/${roomId}/add-user?userId=${userId}`, { responseType: 'json'});
   }
 
-  public likeMovie(roomId: string, movieId: string, userId: string, likeRating: number): Observable<boolean> {
-    return this.httpClient.post<boolean>(`rooms/${roomId}/movies/${movieId}/like?userId=${userId}&likeRating=${likeRating}`, { responseType: 'json' });
+  public getFoundMovie(roomId: string): Observable<number> {
+    return this.httpClient.get<number>(`rooms/${roomId}/found-movie-id`);
   }
 
-  public removeUserFromRoom(userId: string, roomId: string): Observable<User> {
-    return this.httpClient.delete<User>(`rooms/${roomId}/users/${userId}`, { responseType: 'json'});
-  }
-
-  public getFoundMovie(roomId: string): Observable<Movie> {
-    return this.httpClient.get<Movie>(`rooms/${roomId}/foundMovie`);
+  public getUsersInRoom(roomId: string): Observable<User[]> {
+    return this.httpClient.get<User[]>(`rooms/${roomId}/users`);
   }
 
 }

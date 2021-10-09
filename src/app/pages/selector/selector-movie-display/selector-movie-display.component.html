@@ -1,7 +1,7 @@
 <div class="container-fluid p-0">
   <div class="row m-0 justify-content-center">
     <div *ngIf="displayedMovie" class="col p-0 text-center">
-      <p>{{ displayedMovie.title }}</p>
+      <p class="h3 text-center text-second">{{ displayedMovie.title }}</p>
       <img src="{{ displayedMovie.currentMoviePoster ? displayedMovie.currentMoviePoster : 'assets/images/Image_not_found.jpeg' }}" style="max-width: 200px;" class="card-img-top">
     </div>
   </div>

@@ -17,6 +17,7 @@
         </div>
 
         <button type="submit" [disabled]="!userInputForm.controls['roomId'].invalid || (userInputForm.controls['roomId'].invalid && userInputForm.controls['userName'].invalid)" class="btn btn-success">Create room</button>
+
         <button type="submit" [disabled]="userInputForm.pristine || userInputForm.invalid" class="btn btn-success mx-2">Join room</button>
       </form>
     </div>

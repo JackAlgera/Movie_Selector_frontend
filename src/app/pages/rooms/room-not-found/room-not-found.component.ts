@@ -17,7 +17,7 @@ export class RoomNotFoundComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.titleService.setData(this.route.snapshot.data['title'], this.route.snapshot.data['message']);
+    this.titleService.setDataWithRoute(this.route);
   }
 
 }

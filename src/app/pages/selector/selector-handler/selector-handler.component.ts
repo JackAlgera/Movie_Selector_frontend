@@ -1,10 +1,9 @@
-import { ConfigService } from './../../../_utils/config.service';
-import { MovieSelection } from './../../../_models/movie-selection';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FilterTypes } from './../../../_models/filter-types.enum';
+import { UserDaoService } from './../../../_web/_daos/user-dao.service';
 import { Genre } from './../../../_models/genre';
 import { RoutingService } from './../../../_utils/routing.service';
 import { User } from './../../../_models/user';
-import { RoomDaoService } from './../../../_web/_daos/room-dao.service';
 import { UserService } from './../../../_services/user.service';
 import { MovieDaoService } from './../../../_web/_daos/movie-dao.service';
 import { Movie } from './../../../_models/movie';
@@ -21,8 +20,9 @@ export class SelectorHandlerComponent implements OnInit {
   allGenres: Genre[];
   selectedGenre: Genre = null;
 
-  selection: MovieSelection;
   displayedMovie: Movie;
+  moviesToDisplayQueue: Movie[];
+  shouldRateOtherUsersMovies: Boolean = false;
 
   @Input() roomId: string;
   user: User;
@@ -30,82 +30,64 @@ export class SelectorHandlerComponent implements OnInit {
   constructor(
     private movieDaoService: MovieDaoService,
     private userService: UserService,
-    private roomDaoService: RoomDaoService,
-    private routingService: RoutingService,
-    private configService: ConfigService
+    private userDaoService: UserDaoService,
+    private routingService: RoutingService
   ) { }
 
   ngOnInit() {
     this.user = this.userService.getUser();
-    this.selection = new MovieSelection(this.configService.getValue("maxMoviesPerRequest", 10));
 
     this.movieDaoService.getAllGenres().subscribe((genres: Genre[]) => {
       this.allGenres = genres;
     });
 
-    this.updateMovies(true);
+    this.updateMoviesToDisplay();
   }
 
-  private showNextMovie() : void {
-    if (this.selection.isQueueEmpty()) {
-      this.selection.shouldPickRatedMovies = !this.selection.shouldPickRatedMovies;
-      this.updateMovies(false);
-    } else {
-      this.displayedMovie = this.selection.getNextMovieToDisplay();
-      this.movieDaoService.addMoviePoster(this.displayedMovie);
-    }
-  }
-
-  public updateMovies(changedGenre: boolean) {
-    if (changedGenre) {
-      this.selection.changedGenres();
-      this.updateMoviesList();
-      return;
-    }
-
-    if (this.selection.shouldPickRatedMovies) {
-      this.movieDaoService.getUnratedMoviesForUser(this.roomId, this.user.userId).subscribe((movies: Movie[]) => {
-        if (!movies || movies.length == 0) {
-          this.selection.shouldPickRatedMovies = !this.selection.shouldPickRatedMovies;
-          this.updateMovies(false);
+  public updateMoviesToDisplay() : void {
+    if (this.shouldRateOtherUsersMovies) {
+      this.movieDaoService.getOtherUsersUnratedMovies(this.user.userId).subscribe((movies: Movie[]) => {
+        if (!movies || movies.length === 0) {
+          this.shouldRateOtherUsersMovies = !this.shouldRateOtherUsersMovies;
+          this.updateMoviesToDisplay();
         } else {
-          this.selection.addMoviesToQueue(movies);
+          this.moviesToDisplayQueue = movies;
           this.showNextMovie();
         }
       })
     } else {
-      if (this.selection.shouldUpdateMoviesWithChosenGenreList()) {
-        this.selection.updatedMoviesWithGenreList();
-        this.updateMoviesList();
-      } else {
-        this.selection.addNextMoviesWithChosenGenreToQueue();
+      this.movieDaoService.getUnratedMoviesForUser(
+            this.user.userId,
+            new Filter(FilterTypes.GENRE, this.selectedGenre ? this.selectedGenre.id.toString() : null),
+            new Filter(FilterTypes.PRIMARY_RELEASE_DATE_GTE, '2021'),
+            new Filter(FilterTypes.SORT_BY, 'popularity.desc')
+          ).subscribe((movies: Movie[]) => {
+        this.moviesToDisplayQueue = movies;
         this.showNextMovie();
-      }
+      });
     }
   }
 
-  public rateLikeMovie(likeRating : number) : void {
-    this.roomDaoService.likeMovie(this.roomId, this.displayedMovie.id, this.user.userId, likeRating).subscribe((foundMovie: boolean) => {
-      if (foundMovie) {
-        this.routingService.routeToMovieFoundPage(this.roomId);
-      } else {
-        this.showNextMovie();
-      }
-    });
+  private showNextMovie() : void {
+    if (this.moviesToDisplayQueue.length === 0) {
+      this.shouldRateOtherUsersMovies = !this.shouldRateOtherUsersMovies;
+      this.updateMoviesToDisplay();
+    } else {
+      this.displayedMovie = this.moviesToDisplayQueue.pop();
+      this.movieDaoService.addMoviePoster(this.displayedMovie);
+    }
   }
 
-  private updateMoviesList() {
-    this.movieDaoService.getAllMovies(
-          this.user.userId,
-          this.roomId,
-          new Filter(FilterTypes.GENRE, this.selectedGenre ? this.selectedGenre.id.toString() : null),
-          new Filter(FilterTypes.PRIMARY_RELEASE_DATE_GTE, '2021'),
-          new Filter(FilterTypes.SORT_BY, 'popularity.desc'),
-          new Filter(FilterTypes.PAGE, this.selection.page.toString())
-        ).subscribe((movies: Movie[]) => {
-      this.selection.setMoviesWithChosenGenre(movies);
-      this.selection.page += 1;
-      this.showNextMovie();
-    });
+  public rateMovie(likeRating : number) : void {
+    this.userDaoService.rateMovie(this.user.userId, this.displayedMovie.id, likeRating).subscribe(
+      _ => this.showNextMovie(),
+      (error: HttpErrorResponse) => {
+        console.log(error);
+        console.log(this.user);
+        if (error.status === 409) {
+          this.routingService.routeToMovieFoundPage(this.user.roomId)
+        }
+      }
+    );
   }
 }

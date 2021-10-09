@@ -1,5 +1,4 @@
-import { RoutingService } from './../../../../_utils/routing.service';
-import { UserDaoService } from './../../../../_web/_daos/user-dao.service';
+import { RoomDaoService } from './../../../../_web/_daos/room-dao.service';
 import { User } from 'src/app/_models/user';
 import { Component, Input, OnInit } from '@angular/core';
 
@@ -14,15 +13,11 @@ export class ViewConnectedUsersComponent implements OnInit {
   connectedUsers: User[];
 
   constructor(
-    private userDaoService: UserDaoService,
-    private routingService: RoutingService
+    private roomDaoService: RoomDaoService
   ) { }
 
   ngOnInit() {
-    setInterval(() =>
-      this.userDaoService.getUsersInRoom(this.roomId).subscribe(
-        (connectedUsers: User[]) => {
-          this.connectedUsers = connectedUsers;
-        }), 3000)
+    setInterval(() => this.roomDaoService.getUsersInRoom(this.roomId).subscribe(
+        (connectedUsers: User[]) => this.connectedUsers = connectedUsers), 3000)
   }
 }

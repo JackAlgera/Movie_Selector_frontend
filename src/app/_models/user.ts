@@ -1,9 +1,11 @@
 export class User {
-  userId: string;
   userName: string;
+  userId: string;
+  roomId: string;
 
-  constructor(userName: string, userId: string) {
+  constructor(userName: string, userId: string, roomId: string) {
     this.userId = userId;
     this.userName = userName;
+    this.roomId = roomId;
   }
 }

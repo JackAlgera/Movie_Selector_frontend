@@ -24,24 +24,22 @@ export class RoomMovieFoundComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.titleService.setData(this.route.snapshot.data['title'], this.route.snapshot.data['message']);
+    this.titleService.setDataWithRoute(this.route);
 
     this.route.paramMap.subscribe(params => {
       this.roomDaoService.getRoom(params.get('roomId')).subscribe(
         _ => {
           this.roomDaoService.getFoundMovie(params.get('roomId')).subscribe(
-            (movie: Movie) => {
-              this.selectedMovie = movie;
-              this.movieDaoService.addMoviePoster(this.selectedMovie);
+            (movieId: number) => {
+              this.movieDaoService.getMovie(movieId).subscribe((movie: Movie) => {
+                  this.selectedMovie = movie;
+                  this.movieDaoService.addMoviePoster(this.selectedMovie);
+                },
+                error => this.routingService.routeToHome())
             },
-            error => {
-              this.routingService.routeToHome();
-            });
+            error => this.routingService.routeToHome())
         },
-        error => {
-          this.routingService.routeToRoomNotFoundPage(params.get('roomId'));
-        })
+        error => this.routingService.routeToRoomNotFoundPage(params.get('roomId')))
     });
   }
-
 }

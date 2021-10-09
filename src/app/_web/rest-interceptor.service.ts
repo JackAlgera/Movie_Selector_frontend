@@ -1,12 +1,10 @@
+import { environment } from './../../environments/environment.prod';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class RestInterceptorService implements HttpInterceptor {
-
-  private backendURL = 'http://localhost:8080/api';
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let apiReq;
 
@@ -18,7 +16,7 @@ export class RestInterceptorService implements HttpInterceptor {
     }
 
     apiReq = req.clone({
-      url: `${this.backendURL}/${req.url}`
+      url: `${environment.apiBaseURL}/api/${req.url}`
     });
     return next.handle(apiReq);
   }

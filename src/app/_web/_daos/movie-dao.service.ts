@@ -1,7 +1,6 @@
-import { ConfigService } from './../../_utils/config.service';
+import { Filter } from './../../_models/filter';
 import { Genre } from './../../_models/genre';
 import { Movie } from './../../_models/movie';
-import { Filter } from './../../_models/filter';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -15,21 +14,24 @@ export class MovieDaoService {
   private API_KEY = "096873bdfea4d97d0af6b7ab7faa38bb";
 
   constructor(
-    private configService: ConfigService,
     private httpClient: HttpClient
   ) { }
 
-  public getAllMovies(userId: string, roomId: string, ...filters: Filter[]): Observable<Movie[]> {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    return this.httpClient.post<Movie[]>(`room/${roomId}/users/${userId}/movies`, JSON.stringify(filters.filter(f => f.val)), { headers: headers });
-  }
-
-  public getUnratedMoviesForUser(roomId: string, userId: string): Observable<Movie[]> {
-    return this.httpClient.get<Movie[]>(`room/${roomId}/users/${userId}/unrated-movies?maxMoviesPerRequest=${this.configService.getValue("maxMoviesPerRequest", 10)}`)
-  }
-
   public getAllGenres(): Observable<Genre[]> {
     return this.httpClient.get<Genre[]>(`genres`)
+  }
+
+  public getMovie(movieId: number): Observable<Movie> {
+    return this.httpClient.get<Movie>(`movies/${movieId}`)
+  }
+
+  public getUnratedMoviesForUser(userId: string, ...filters: Filter[]): Observable<Movie[]> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpClient.post<Movie[]>(`users/${userId}/unrated-movies`, JSON.stringify(filters.filter(f => f.val)), { headers: headers, responseType: 'json' } )
+  }
+
+  public getOtherUsersUnratedMovies(userId: string): Observable<Movie[]> {
+    return this.httpClient.post<Movie[]>(`users/${userId}/other-users-unrated-movies`, { responseType: 'json' })
   }
 
   public addMoviePoster(movie: Movie) {

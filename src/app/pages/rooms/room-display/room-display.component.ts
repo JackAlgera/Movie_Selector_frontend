@@ -1,4 +1,6 @@
-import { MovieDaoService } from './../../../_web/_daos/movie-dao.service';
+import { UserService } from './../../../_services/user.service';
+import { User } from 'src/app/_models/user';
+import { RoutingService } from './../../../_utils/routing.service';
 import { RoomDaoService } from './../../../_web/_daos/room-dao.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TitleService } from './../../../_services/title.service';
@@ -16,26 +18,36 @@ export class RoomDisplayComponent implements OnInit {
   constructor(
     private titleService: TitleService,
     private roomDaoService: RoomDaoService,
+    private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router
+    private routingService: RoutingService
   ) { }
 
   ngOnInit() {
-    this.titleService.setData(this.route.snapshot.data['title'], this.route.snapshot.data['message']);
+    this.titleService.setDataWithRoute(this.route);
     this.checkIfRoomExists();
   }
 
-  private checkIfRoomExists() : boolean {
+  private checkIfRoomExists() : void {
     this.route.paramMap.subscribe(params => {
-      this.roomDaoService.getRoom(params.get('roomId')).subscribe(
-        _ => {
-          this.roomId = params.get('roomId');
-        },
-        error => {
-          this.router.navigateByUrl(`rooms/${params.get('roomId')}/not-found`);
-        })
-    });
+      this.roomId = params.get('roomId');
 
-    return true;
+      this.roomDaoService.getRoom(this.roomId).subscribe(
+        _ => {
+          this.roomDaoService.getFoundMovie(this.roomId).subscribe((movieId: number) => {
+            console.log(movieId);
+            if (movieId > 0) {
+              this.routingService.routeToMovieFoundPage(this.roomId);
+            }
+          })
+
+          var user: User = this.userService.getUser();
+          if (user && !user.roomId) {
+            this.roomDaoService.addUserToRoom(user.userId, this.roomId).subscribe(_ => this.userService.setRoomId(this.roomId));
+          }
+        },
+        error => this.routingService.routeToRoomNotFoundPage(params.get('roomId'))
+      )
+    });
   }
 }
