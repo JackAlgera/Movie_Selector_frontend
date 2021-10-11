@@ -16,7 +16,7 @@ export class ViewConnectedUsersComponent implements OnInit {
     private roomDaoService: RoomDaoService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     setInterval(() => this.roomDaoService.getUsersInRoom(this.roomId).subscribe(
         (connectedUsers: User[]) => this.connectedUsers = connectedUsers), 3000)
   }

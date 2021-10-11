@@ -1,12 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { FilterTypes } from './../../../_models/filter-types.enum';
-import { UserDaoService } from './../../../_web/_daos/user-dao.service';
-import { Genre } from './../../../_models/genre';
-import { RoutingService } from './../../../_utils/routing.service';
-import { User } from './../../../_models/user';
-import { UserService } from './../../../_services/user.service';
-import { MovieDaoService } from './../../../_web/_daos/movie-dao.service';
-import { Movie } from './../../../_models/movie';
+import { FilterTypes } from '../../../_models/filter-types.enum';
+import { UserDaoService } from '../../../_web/_daos/user-dao.service';
+import { Genre } from '../../../_models/genre';
+import { RoutingService } from '../../../_utils/routing.service';
+import { User } from '../../../_models/user';
+import { UserService } from '../../../_services/user.service';
+import { MovieDaoService } from '../../../_web/_daos/movie-dao.service';
+import { Movie } from '../../../_models/movie';
 import { Component, Input, OnInit } from '@angular/core';
 import { Filter } from 'src/app/_models/filter';
 
@@ -22,7 +22,7 @@ export class SelectorHandlerComponent implements OnInit {
 
   displayedMovie: Movie;
   moviesToDisplayQueue: Movie[];
-  shouldRateOtherUsersMovies: Boolean = false;
+  shouldRateOtherUsersMovies = false;
 
   @Input() roomId: string;
   user: User;
@@ -34,7 +34,7 @@ export class SelectorHandlerComponent implements OnInit {
     private routingService: RoutingService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.user = this.userService.getUser();
 
     this.movieDaoService.getAllGenres().subscribe((genres: Genre[]) => {
@@ -44,7 +44,7 @@ export class SelectorHandlerComponent implements OnInit {
     this.updateMoviesToDisplay();
   }
 
-  public updateMoviesToDisplay() : void {
+  public updateMoviesToDisplay(): void {
     if (this.shouldRateOtherUsersMovies) {
       this.movieDaoService.getOtherUsersUnratedMovies(this.user.userId).subscribe((movies: Movie[]) => {
         if (!movies || movies.length === 0) {
@@ -54,7 +54,7 @@ export class SelectorHandlerComponent implements OnInit {
           this.moviesToDisplayQueue = movies;
           this.showNextMovie();
         }
-      })
+      });
     } else {
       this.movieDaoService.getUnratedMoviesForUser(
             this.user.userId,
@@ -68,7 +68,7 @@ export class SelectorHandlerComponent implements OnInit {
     }
   }
 
-  private showNextMovie() : void {
+  private showNextMovie(): void {
     if (this.moviesToDisplayQueue.length === 0) {
       this.shouldRateOtherUsersMovies = !this.shouldRateOtherUsersMovies;
       this.updateMoviesToDisplay();
@@ -78,14 +78,14 @@ export class SelectorHandlerComponent implements OnInit {
     }
   }
 
-  public rateMovie(likeRating : number) : void {
+  public rateMovie(likeRating: number): void {
     this.userDaoService.rateMovie(this.user.userId, this.displayedMovie.id, likeRating).subscribe(
-      _ => this.showNextMovie(),
+      () => this.showNextMovie(),
       (error: HttpErrorResponse) => {
         console.log(error);
         console.log(this.user);
         if (error.status === 409) {
-          this.routingService.routeToMovieFoundPage(this.user.roomId)
+          this.routingService.routeToMovieFoundPage(this.user.roomId);
         }
       }
     );

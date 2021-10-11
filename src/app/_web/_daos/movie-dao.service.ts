@@ -39,7 +39,7 @@ export class MovieDaoService {
                     .subscribe(data => this.createImageFromBlob(data, movie));
   }
 
-  private createImageFromBlob(image: Blob, movie: Movie) : void {
+  private createImageFromBlob(image: Blob, movie: Movie): void {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       movie.currentMoviePoster = reader.result;

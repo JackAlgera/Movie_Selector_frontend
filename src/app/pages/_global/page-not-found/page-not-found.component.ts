@@ -16,7 +16,7 @@ export class PageNotFoundComponent implements OnInit {
     public routingService: RoutingService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.titleService.setData(this.route.snapshot.data['title'], this.route.snapshot.data['message']);
   }
 

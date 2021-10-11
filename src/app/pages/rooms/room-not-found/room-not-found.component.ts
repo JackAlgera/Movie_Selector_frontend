@@ -16,7 +16,7 @@ export class RoomNotFoundComponent implements OnInit {
     public routingService: RoutingService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.titleService.setDataWithRoute(this.route);
   }
 

@@ -1,7 +1,13 @@
 <div class="container-fluid p-0">
 
-  <div *ngIf="shouldRateOtherUsersMovies" class="row m-0 justify-content-center">
-    <div class="col p-0 my-2">
+  <div *ngIf="roomId" class="row m-0">
+    <div class="col-3 p-0 text-center">
+      <p class="h4 text-center text-second">
+        Room Id : <strong>{{ roomId }}</strong>
+      </p>
+    </div>
+    <div class="col"></div>
+    <div *ngIf="shouldRateOtherUsersMovies" class="col-3 p-0 justify-content-center">
       <p>Your friends liked liked some of these movies !</p>
     </div>
   </div>

@@ -1,11 +1,4 @@
 <div class="container-fluid p-0">
-  <div class="row m-0">
-    <div *ngIf="roomId" class="col-3 p-0 text-center">
-      <p class="h3 text-center text-second">
-        Room Id : <strong>{{ roomId }}</strong>
-      </p>
-    </div>
-  </div>
   <div class="row m-0 justify-content-center">
     <div *ngIf="roomId" class="col-3 p-0 text-center">
       <app-selector-handler [roomId]="roomId"></app-selector-handler>

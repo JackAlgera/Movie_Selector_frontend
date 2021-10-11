@@ -17,7 +17,7 @@ constructor(
 ) { }
 
   // TODO : use a cookie instead / or as local cache
-  public setUser(userName: string) : Observable<User> {
+  public setUser(userName: string): Observable<User> {
     var request = this.userDaoService.generateNewUser(userName);
 
     request.subscribe((user: User) => {
@@ -33,14 +33,14 @@ constructor(
     return request;
   }
 
-  public getUser() : User {
+  public getUser(): User {
     if (!this.checkIfUserSet()) {
       this.routingService.routeToHome();
     }
     return this.user;
   }
 
-  private checkIfUserSet() : boolean {
+  private checkIfUserSet(): boolean {
     return (this.user && this.user.userId !== '');
   }
 

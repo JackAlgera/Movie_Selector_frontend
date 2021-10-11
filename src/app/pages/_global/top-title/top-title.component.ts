@@ -12,7 +12,7 @@ export class TopTitleComponent implements OnInit {
     public titleService: TitleService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

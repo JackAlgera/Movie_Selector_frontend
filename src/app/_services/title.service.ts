@@ -11,20 +11,20 @@ export class TitleService {
 
   constructor() { }
 
-  public getTitle() : string {
+  public getTitle(): string {
     return this.title
   }
 
-  public getMessage() : string {
+  public getMessage(): string {
     return this.message
   }
 
-  public setData(title: string, message: string) : void {
+  public setData(title: string, message: string): void {
     this.title    = title;
     this.message  = message;
   }
 
-  public setDataWithRoute(route: ActivatedRoute) : void {
+  public setDataWithRoute(route: ActivatedRoute): void {
     this.title    = route.snapshot.data['title'];
     this.message  = route.snapshot.data['message'];
   }
