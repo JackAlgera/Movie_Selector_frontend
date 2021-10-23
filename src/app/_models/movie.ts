@@ -3,9 +3,9 @@ export class Movie {
   id: string;
   title: string;
   overview: string;
-  release_date: string;
+  releaseDate: string;
   genres: Genre[];
-  poster_path: string;
+  posterPath: string;
 
   currentMoviePoster: any;
 }

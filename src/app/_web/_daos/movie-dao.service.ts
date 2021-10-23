@@ -35,7 +35,7 @@ export class MovieDaoService {
   }
 
   public addMoviePoster(movie: Movie) {
-    this.httpClient.get(`${this.MOVIE_POSTER_URL}${movie.poster_path}?api_key=${this.API_KEY}`, { responseType: 'blob', headers: { SKIP_INTERCEPTOR: '' } })
+    this.httpClient.get(`${this.MOVIE_POSTER_URL}${movie.posterPath}?api_key=${this.API_KEY}`, { responseType: 'blob', headers: { SKIP_INTERCEPTOR: '' } })
                     .subscribe(data => this.createImageFromBlob(data, movie));
   }
 

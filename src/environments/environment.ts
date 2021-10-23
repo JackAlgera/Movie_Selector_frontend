@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseURL: 'http://movie_selector_backend:8080'
+  apiBaseURL: 'http://localhost:8080'
 };
 
 /*
