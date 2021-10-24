@@ -1,47 +1,35 @@
 <div class="container-fluid p-0">
 
-  <div *ngIf="roomId" class="row m-0">
-    <div class="col-3 p-0 text-center">
-      <p class="h4 text-center text-second">
-        Room Id : <strong>{{ roomId }}</strong>
-      </p>
-    </div>
-    <div class="col"></div>
-    <div *ngIf="shouldRateOtherUsersMovies" class="col-3 p-0 justify-content-center">
-      <p>Your friends liked liked some of these movies !</p>
-    </div>
-  </div>
-
-  <div class="row m-0 justify-content-center">
-    <div class="col p-0 my-2">
-      <app-selector-movie-display [displayedMovie]="displayedMovie"></app-selector-movie-display>
-    </div>
-  </div>
-
-  <div *ngIf="displayedMovie" class="row m-0 py-2 justify-content-center">
-    <div class="col-2 p-0">
-      <button type="button" class="btn btn-danger" (click)="rateMovie(1)">1</button>
-    </div>
-    <div class="col-2 p-0">
-      <button type="button" class="btn btn-secondary" (click)="rateMovie(2)">2</button>
-    </div>
-    <div class="col-2 p-0">
-      <button type="button" class="btn btn-secondary" (click)="rateMovie(3)">3</button>
-    </div>
-    <div class="col-2 p-0">
-      <button type="button" class="btn btn-secondary" (click)="rateMovie(4)">4</button>
-    </div>
-    <div class="col-2 p-0">
-      <button type="button" class="btn btn-success" (click)="rateMovie(5)">5</button>
-    </div>
-  </div>
-
-  <div class="row mx-0 my-2 justify-content-center">
-    <div class="col p-0">
+  <div class="row mx-0 my-1 justify-content-center">
+    <div class="col p-0" style="max-width: 350px">
       <select class="form-select" [(ngModel)]="selectedGenre" (ngModelChange)="updateMoviesToDisplay()">
         <option [ngValue]="null">All genres</option>
         <option *ngFor="let genre of allGenres" [ngValue]="genre">{{ genre.name }}</option>
       </select>
+    </div>
+  </div>
+
+  <div *ngIf="displayedMovie" class="row m-0 py-1 justify-content-center">
+    <div class="col-2 p-0" style="max-width: 55px">
+      <button type="button" class="btn btn-danger" (click)="rateMovie(1)">1</button>
+    </div>
+    <div class="col-2 p-0" style="max-width: 55px">
+      <button type="button" class="btn btn-secondary" (click)="rateMovie(2)">2</button>
+    </div>
+    <div class="col-2 p-0" style="max-width: 55px">
+      <button type="button" class="btn btn-secondary" (click)="rateMovie(3)">3</button>
+    </div>
+    <div class="col-2 p-0" style="max-width: 55px">
+      <button type="button" class="btn btn-secondary" (click)="rateMovie(4)">4</button>
+    </div>
+    <div class="col-2 p-0" style="max-width: 55px">
+      <button type="button" class="btn btn-success" (click)="rateMovie(5)">5</button>
+    </div>
+  </div>
+
+  <div class="row m-0 justify-content-center">
+    <div class="col p-2 my-2 bg-white rounded" style="max-width: 350px">
+      <app-selector-movie-display [displayedMovie]="displayedMovie"></app-selector-movie-display>
     </div>
   </div>
 

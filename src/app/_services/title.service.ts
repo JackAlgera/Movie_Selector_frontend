@@ -6,17 +6,17 @@ import { Injectable } from '@angular/core';
 })
 export class TitleService {
 
-  public title: string   = ''
-  public message: string = ''
+  public title   = '';
+  public message = '';
 
   constructor() { }
 
   public getTitle(): string {
-    return this.title
+    return this.title;
   }
 
   public getMessage(): string {
-    return this.message
+    return this.message;
   }
 
   public setData(title: string, message: string): void {
@@ -25,7 +25,7 @@ export class TitleService {
   }
 
   public setDataWithRoute(route: ActivatedRoute): void {
-    this.title    = route.snapshot.data['title'];
-    this.message  = route.snapshot.data['message'];
+    this.title    = route.snapshot.data.title;
+    this.message  = route.snapshot.data.message;
   }
 }

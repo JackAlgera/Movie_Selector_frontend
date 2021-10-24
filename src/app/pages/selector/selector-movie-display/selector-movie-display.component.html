@@ -1,10 +1,10 @@
-<div class="container-fluid p-0">
+<div class="container-fluid p-0 bg-white rounded">
   <div class="row m-0 justify-content-center">
     <div *ngIf="displayedMovie" class="col p-0 text-center">
-      <p class="h3 text-center text-second">{{ displayedMovie.title }}</p>
-      <p class="h5 text-center text-second">{{ displayedMovie.release_date }}</p>
-      <img src="{{ displayedMovie.currentMoviePoster ? displayedMovie.currentMoviePoster : 'assets/images/Image_not_found.jpeg' }}" style="max-width: 200px;" class="card-img-top">
-      <p class="h4 text-center text-third">{{ displayedMovie.overview }}</p>
+      <img src="{{ displayedMovie.currentMoviePoster ? displayedMovie.currentMoviePoster : 'assets/images/Image_not_found.jpeg' }}"
+           style="max-width: 80%;" class="card-img-top">
+      <p class="h5 text-center mt-3">{{ displayedMovie.title }}</p>
+      <p style="max-height: 150px; overflow-y: scroll" class="h6 text-center fw-light lh-sm">{{ displayedMovie.overview }}</p>
     </div>
   </div>
 </div>

@@ -18,17 +18,17 @@ constructor(
 
   // TODO : use a cookie instead / or as local cache
   public setUser(userName: string): Observable<User> {
-    var request = this.userDaoService.generateNewUser(userName);
+    const request = this.userDaoService.generateNewUser(userName);
 
     request.subscribe((user: User) => {
       if (!this.user) {
         this.user = new User(user.userName, user.userId, user.roomId);
       } else {
-        this.user.userName = user.userName;
-        this.user.userId = user.userId;
-        this.user.roomId = user.roomId;
+        this.user.userName  = user.userName;
+        this.user.userId    = user.userId;
+        this.user.roomId    = user.roomId;
       }
-    })
+    });
 
     return request;
   }
@@ -44,7 +44,7 @@ constructor(
     return (this.user && this.user.userId !== '');
   }
 
-  public setRoomId(roomId: string) {
+  public setRoomId(roomId: string): void {
     this.user.roomId = roomId;
   }
 }

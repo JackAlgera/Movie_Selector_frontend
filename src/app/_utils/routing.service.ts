@@ -10,16 +10,16 @@ constructor(
   private router: Router
 ) { }
 
-  public routeToHome() {
+  public routeToHome(): void {
     console.log('routing home');
     this.router.navigateByUrl('');
   }
 
-  public routeToMovieFoundPage(roomId: string) {
+  public routeToMovieFoundPage(roomId: string): void {
     this.router.navigateByUrl(`/rooms/${roomId}/found-movie`);
   }
 
-  public routeToRoomNotFoundPage(roomId: string) {
+  public routeToRoomNotFoundPage(roomId: string): void {
     this.router.navigateByUrl(`/rooms/${roomId}/not-found`);
   }
 }

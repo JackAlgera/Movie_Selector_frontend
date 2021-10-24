@@ -9,6 +9,7 @@ import { MovieDaoService } from '../../../_web/_daos/movie-dao.service';
 import { Movie } from '../../../_models/movie';
 import { Component, Input, OnInit } from '@angular/core';
 import { Filter } from 'src/app/_models/filter';
+import { SharedVariableService } from '../../../_services/shared-variable.service';
 
 @Component({
   selector: 'app-selector-handler',
@@ -22,7 +23,6 @@ export class SelectorHandlerComponent implements OnInit {
 
   displayedMovie: Movie;
   moviesToDisplayQueue: Movie[];
-  shouldRateOtherUsersMovies = false;
 
   @Input() roomId: string;
   user: User;
@@ -31,7 +31,8 @@ export class SelectorHandlerComponent implements OnInit {
     private movieDaoService: MovieDaoService,
     private userService: UserService,
     private userDaoService: UserDaoService,
-    private routingService: RoutingService
+    private routingService: RoutingService,
+    private sharedVariableService: SharedVariableService
   ) { }
 
   ngOnInit(): void {
@@ -45,10 +46,10 @@ export class SelectorHandlerComponent implements OnInit {
   }
 
   public updateMoviesToDisplay(): void {
-    if (this.shouldRateOtherUsersMovies) {
+    if (this.sharedVariableService.getShouldRateOtherUsersMovies()) {
       this.movieDaoService.getOtherUsersUnratedMovies(this.user.userId).subscribe((movies: Movie[]) => {
         if (!movies || movies.length === 0) {
-          this.shouldRateOtherUsersMovies = !this.shouldRateOtherUsersMovies;
+          this.sharedVariableService.swapShouldRateOtherUsersMovies();
           this.updateMoviesToDisplay();
         } else {
           this.moviesToDisplayQueue = movies;
@@ -70,7 +71,7 @@ export class SelectorHandlerComponent implements OnInit {
 
   private showNextMovie(): void {
     if (this.moviesToDisplayQueue.length === 0) {
-      this.shouldRateOtherUsersMovies = !this.shouldRateOtherUsersMovies;
+      this.sharedVariableService.swapShouldRateOtherUsersMovies();
       this.updateMoviesToDisplay();
     } else {
       this.displayedMovie = this.moviesToDisplayQueue.pop();
@@ -82,8 +83,6 @@ export class SelectorHandlerComponent implements OnInit {
     this.userDaoService.rateMovie(this.user.userId, this.displayedMovie.id, likeRating).subscribe(
       () => this.showNextMovie(),
       (error: HttpErrorResponse) => {
-        console.log(error);
-        console.log(this.user);
         if (error.status === 409) {
           this.routingService.routeToMovieFoundPage(this.user.roomId);
         }

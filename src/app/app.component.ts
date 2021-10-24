@@ -1,4 +1,4 @@
-import { MovieChoiceService } from './_services/movie-choice.service';
+import { SharedVariableService } from './_services/shared-variable.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
@@ -10,7 +10,7 @@ import { NgForm } from '@angular/forms';
 export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
-    public movieChoiceService: MovieChoiceService
+    public movieChoiceService: SharedVariableService
   ) { }
 
   ngOnInit(): void { }

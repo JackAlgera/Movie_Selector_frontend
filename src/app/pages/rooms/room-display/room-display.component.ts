@@ -5,6 +5,7 @@ import { RoomDaoService } from '../../../_web/_daos/room-dao.service';
 import { ActivatedRoute } from '@angular/router';
 import { TitleService } from '../../../_services/title.service';
 import { Component, OnInit } from '@angular/core';
+import { SharedVariableService } from '../../../_services/shared-variable.service';
 
 @Component({
   selector: 'app-room-display',
@@ -20,7 +21,8 @@ export class RoomDisplayComponent implements OnInit {
     private roomDaoService: RoomDaoService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private routingService: RoutingService
+    private routingService: RoutingService,
+    public sharedVariableService: SharedVariableService
   ) { }
 
   ngOnInit(): void {

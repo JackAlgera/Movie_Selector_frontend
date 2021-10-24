@@ -1,12 +1,21 @@
 <div class="container-fluid p-0">
   <div class="row m-0 justify-content-center">
-    <div *ngIf="roomId" class="col-3 p-0 text-center">
+
+    <div class="col-4 p-0 text-center">
+      <p class="h5 text-center text-second">
+        Room Id : <strong>{{ roomId }}</strong>
+      </p>
+    </div>
+
+    <div *ngIf="roomId" class="col-4 p-0 text-center">
       <app-selector-handler [roomId]="roomId"></app-selector-handler>
     </div>
-  </div>
-<!--  <div class="row m-0">
-    <div class="col-6 p-0">
-      <app-view-connected-users [roomId]="roomId"></app-view-connected-users>
+
+    <div class="col-4 p-0 text-center">
+      <p class="h5 text-center text-second" *ngIf="sharedVariableService.getShouldRateOtherUsersMovies()">
+        Your friends liked liked some of these movies !
+      </p>
     </div>
-  </div>-->
+
+  </div>
 </div>
